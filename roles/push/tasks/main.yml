@@ -1,0 +1,77 @@
+---
+# 参数检查
+- name: Validate input
+  ansible.builtin.assert:
+    that:
+      - push_service != ""
+      - push_user != ""
+      - push_group !=  ""
+      - push_target_dir != ""
+      - push_templates_dir !=  ""
+
+# 检查目标用户和组是否存在
+- name: Verify target user exists
+  ansible.builtin.user:
+    name: "{{ push_user }}"
+    groups: "{{ push_group }}"
+    append: yes
+  when: push_user != "root"
+
+# 创建服务文件夹
+- name: Create directory for {{ push_service }}
+  become: true
+  ansible.builtin.file:
+    path: "{{ push_target_dir }}"
+    state: directory
+    owner: "{{ push_user }}"
+    group: "{{ push_group }}"
+    mode: "0755"
+
+# 确保push_precreate_dirs中的所有目录都预创建好
+- name: Ensure precreate directories exist
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0755"
+  loop: "{{ push_precreate_dirs }}"
+  when: push_precreate_dirs is defined and push_precreate_dirs | length > 0
+  loop_control:
+    label: "DIR: {{ item }}"
+
+  # 预先确保模板中的所有目录都预创建好
+- name: Ensure target directory exists
+  ansible.builtin.file:
+    path: "{{ push_target_dir }}/{{ item.path }}" # 注意这里是完整路径
+    state: directory
+    mode: "0755"
+    owner: "{{ push_user }}"
+    group: "{{ push_group }}"
+  loop: "{{ query('filetree', push_templates_dir) }}"
+  when: item.state == 'directory' # 这里明确处理目录
+  loop_control:
+    label: "DIR: {{ item.path }}"
+
+# 将所有配置模板渲染到目标机器上
+- name: Template config templates {{ push_templates_dir }} to target directory {{ push_target_dir }}
+  ansible.builtin.template:
+    trim_blocks: no
+    src: "{{ item.root }}/{{ item.path }}"
+    dest: "{{ push_target_dir }}/{{ item.path }}"
+    owner: "{{ push_user }}"
+    group: "{{ push_group }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ query('filetree', push_templates_dir) }}"
+  when: item.state == 'file' or item.state == 'link' # 这里明确处理文件和链接
+  loop_control:
+    label: "FILE: {{ item.path }}"
+
+- name: "Up docker compose service in {{ push_target_dir }}"
+  community.docker.docker_compose_v2:
+    project_src: "{{ push_target_dir }}"
+    state: present
+    # recreate: always # 总是重新创建容器
+    remove_orphans: true # 清理未定义的容器
+  when:
+    - push_start_service | default(false) # 默认不启动服务

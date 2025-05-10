@@ -1,0 +1,70 @@
+---
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Ensure keyring directory exists
+  ansible.builtin.file:
+    path: "{{ docker_gpg_key_path | dirname }}"
+    state: directory
+    mode: "0755"
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: "{{ docker_gpg_url }}"
+    dest: "{{ docker_gpg_key_path }}"
+    mode: "0644"
+    validate_certs: yes
+
+- name: Add Docker repository
+  ansible.builtin.blockinfile:
+    path: "{{ docker_repo_path }}"
+    create: yes
+    block: |
+      deb [arch={{ dpkg_architecture_map[ansible_architecture] | default(ansible_architecture) }} signed-by={{ docker_gpg_key_path }}] {{ docker_repo_url}} {{ ansible_distribution_release }} stable
+    mode: "0644"
+  register: repo_added
+
+- name: Update apt cache if repo changed
+  ansible.builtin.apt:
+    update_cache: yes
+  when: repo_added.changed
+
+- name: Install Docker packages
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+# Docker守护进程配置
+- name: Configure Docker daemon
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: "{{ docker_daemon_config | to_nice_json }}"
+    mode: "0644"
+  notify: restart docker
+
+- name: Ensure Docker service running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+# 验证Docker安装成功
+- name: Verify Docker installation
+  ansible.builtin.command: docker --version
+  register: docker_version
+  changed_when: false
+
+- name: Show installation results
+  ansible.builtin.debug:
+    msg:
+      - "Docker {{ docker_version.stdout }} installed"

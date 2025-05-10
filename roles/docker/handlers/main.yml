@@ -1,0 +1,5 @@
+# 定义一个触发器
+- name: restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted

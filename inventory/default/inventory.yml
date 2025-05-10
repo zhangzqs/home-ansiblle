@@ -1,0 +1,35 @@
+all:
+  hosts:
+    localhost: # 用于在Ansible控制机上执行一些任务时使用
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python3
+    my-j1900:
+      ansible_host: my-j1900
+      service_bind_host: "192.168.242.2"
+  children:
+    fluentd: # 每一台机器上各部署一个fluentd
+      hosts:
+        my-j1900: {}
+      vars:
+        fluentd_bind_host: "127.0.0.1"
+        fluentd_bind_port: 24224
+    node_exporter: # 每一台机器上各部署一个node_exporter
+      hosts:
+        my-j1900: {}
+      vars: 
+        node_exporter_bind_host: "{{ service_bind_host }}"
+        node_exporter_bind_port: 9100
+
+    mosdns:
+    prometheus: # 单节点部署
+      hosts:
+        my-j1900: {}
+      vars:
+        prometheus_bind_host: "{{ service_bind_host }}"
+        prometheus_bind_port: 9090
+    grafana: # 单节点部署
+      hosts:
+        my-j1900: {}
+      vars:
+        grafana_bind_host: "{{ service_bind_host }}"
+        grafana_bind_port: 3000

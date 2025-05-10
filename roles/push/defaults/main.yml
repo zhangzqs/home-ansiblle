@@ -1,0 +1,6 @@
+push_service: "" # 要推送的服务名称
+push_user: astack_service # 目标服务所处用户
+push_group: astack_service # 目标用户所处组
+push_templates_dir: "" # 控制主机上的模板配置目录
+push_target_dir: "" # 目标主机上的服务目录
+push_precreate_dirs: [] # 需要预先创建出来的文件夹

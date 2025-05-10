@@ -1,0 +1,6 @@
+# astack所有服务默认的日志收集器相关配置
+home_default_logging:
+  driver: fluentd
+  options:
+    fluentd-address: "{{ fluentd_bind_host }}:{{ fluentd_bind_port }}"
+    tag: "{{ home_name }}.{% raw %}{{ .Name }}{% endraw %}"

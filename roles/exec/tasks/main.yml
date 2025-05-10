@@ -1,0 +1,14 @@
+---
+# 参数检查
+- name: Validate input
+  ansible.builtin.assert:
+    that:
+      - exec_target_dir != ""
+
+# 启动 docker-compose 项目
+- name: "Up docker compose service in {{ exec_target_dir }}"
+  community.docker.docker_compose_v2:
+    project_src: "{{ exec_target_dir }}"
+    state: present
+    # recreate: always # 总是重新创建容器
+    remove_orphans: true # 清理未定义的容器
