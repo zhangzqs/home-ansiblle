@@ -8,7 +8,10 @@ services:
       TZ: "{{ home_timezone }}"
     volumes:
       - "{{ push_target_dir }}/config.yml:/etc/mosdns/config.yml:ro"
-    network_mode: host
     logging: {{ service_vars.logging.mosdns }}
+    ports:
+      - "{{ mosdns_udp_bind_host }}:{{ mosdns_udp_bind_port }}:53/udp"
+      - "{{ mosdns_tcp_bind_host }}:{{ mosdns_tcp_bind_port }}:53/tcp"
+      - "{{ mosdns_api_bind_host }}:{{ mosdns_api_bind_port }}:80"
 
 networks: {}

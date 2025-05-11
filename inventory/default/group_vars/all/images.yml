@@ -7,3 +7,4 @@ home_images:
   cadvisor: bitnami/cadvisor:0.52.1
   vaultwarden: vaultwarden/server:latest
   portainer: portainer/portainer-ce:2.29.2-alpine
+  nginx: nginx:1.28.0-alpine

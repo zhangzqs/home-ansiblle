@@ -10,4 +10,4 @@ home_volumes_dir: /home/{{ home_user }}/volumes # 持久化卷路径
 
 home_base_domain: "i.zhangzqs.cn"
 home_http_enabled: true
-home_https_enabled: true
+home_https_enabled: false

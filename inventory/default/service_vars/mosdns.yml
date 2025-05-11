@@ -4,6 +4,7 @@ logging:
 conf:
   custom_domains:
     # Samba 共享域名
-    - smb.i.zhangzqs.cn 192.168.242.2
+    - "smb.{{ home_base_domain }} 192.168.242.2"
     # Nginx 泛域名解析
-    - domain:i.zhangzqs.cn 192.168.242.2
+    - "{{ home_base_domain }} 192.168.242.2"
+    - "domain:{{ home_base_domain }} 192.168.242.2"

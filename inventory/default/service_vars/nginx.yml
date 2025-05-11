@@ -1,0 +1,40 @@
+conf:
+  services_domains: # 各个服务的各个域名配置列表
+    portainer:
+      - domain: "portainer.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/logs"
+    mode: 0755
+    owner: 0
+    group: 0
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/cache"
+    mode: 0755
+    owner: 0
+    group: 0
+
+logging:
+  nginx: "{{ home_default_logging }}"
+
+volumes:
+  nginx_logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/logs"
+      o: bind
+
+  nginx_cache:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/cache"
+      o: bind
