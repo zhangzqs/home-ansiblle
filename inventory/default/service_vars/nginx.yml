@@ -4,7 +4,18 @@ conf:
       - domain: "portainer.{{ home_base_domain }}"
         http_enabled: "{{ home_http_enabled }}"
         https_enabled: "{{ home_https_enabled }}"
-
+    vaultwarden:
+      - domain: "vaultwarden.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
+    prometheus:
+      - domain: "prometheus.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
+    grafana:
+      - domain: "grafana.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
     mode: 0755
