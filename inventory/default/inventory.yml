@@ -97,3 +97,6 @@ all:
         aria2_rpc_bind_port: 6800
         aria_ng_bind_host: "{{ service_bind_host }}"
         aria_ng_bind_port: 6801
+    acme_sh:
+      hosts:
+        my-j1900: {}

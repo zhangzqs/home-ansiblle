@@ -13,3 +13,4 @@ home_images:
   samba: dockurr/samba
   aria2: p3terx/aria2-pro
   aria_ng: p3terx/ariang
+  acme_sh: neilpang/acme.sh

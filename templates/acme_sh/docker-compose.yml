@@ -1,0 +1,22 @@
+name: "{{ home_name }}-acme_sh"
+services:
+  acme-sh:
+    container_name: "{{ home_name }}-acme_sh"
+    image: "{{ home_images.acme_sh }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+    volumes:
+      - ./run.sh:/run.sh:ro
+      - acme_home_config:/acme.sh
+      - sslcerts:/certs:ro
+    network_mode: host
+    command: daemon
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+networks: {}
+
+volumes:
+  acme_home_config: {{ service_vars.volumes.acme_home_config }}
+  sslcerts: {{ service_vars.volumes.sslcerts }}

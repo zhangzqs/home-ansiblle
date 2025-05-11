@@ -1,0 +1,36 @@
+conf:
+  dns_provider: 'dns_tencent'
+  email: '{{ home_secrets.acme_sh.email }}'
+  environments:
+    Tencent_SecretId: "{{ home_secrets.acme_sh.Tencent_SecretId }}"
+    Tencent_SecretKey: "{{ home_secrets.acme_sh.Tencent_SecretKey }}"
+
+volumes:
+  acme_home_config: 
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/acme_home_config"
+      o: bind
+  sslcerts:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/sslcerts"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/acme_home_config"
+    mode: 0755
+    owner: 0
+    group: 0
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/sslcerts"
+    mode: 0755
+    owner: 0
+    group: 0
