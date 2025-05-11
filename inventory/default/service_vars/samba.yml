@@ -1,0 +1,10 @@
+conf:
+  share_dirs:
+    - name: "zzq-nas-disk-inner"
+      in_container: /mnt/disk-inner
+      in_host: /mnt/disk-inner
+
+    - name: "zzq-nas-disk-4t"
+      in_container: /mnt/disk-4t
+      in_host: /mnt/disk-4t
+      recycle_enabled: true

@@ -10,3 +10,4 @@ home_images:
   nginx: nginx:1.28.0-alpine
   speedtest: adolfintel/speedtest:latest
   drawio: jgraph/drawio
+  samba: dockurr/samba

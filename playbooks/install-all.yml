@@ -7,6 +7,10 @@
     service: fluentd # 等待各个机器上的fluentd服务启动
     service_host: "{{ fluentd_bind_host }}"
     service_port: "{{ fluentd_bind_port }}"
+  
+- import_playbook: push-service.yml
+  vars:
+    service: mosdns
 
 - import_playbook: push-service.yml
   vars:

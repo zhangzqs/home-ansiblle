@@ -1,0 +1,20 @@
+name: "{{ home_name }}-samba"
+services:
+  samba:
+    image: dockurr/samba
+    container_name: "{{ home_name }}-samba"
+    ports:
+      - "{{ samba_bind_host }}:{{ samba_bind_port }}:445/tcp"
+    environment:
+      UID: {{ home_uid }}
+      GID: {{ home_gid }}
+      USER: "{{ home_secrets.samba.user}}"
+      PASS: "{{ home_secrets.samba.password }}"
+    restart: unless-stopped
+    volumes:
+      - "{{ push_target_dir }}/smb.conf:/etc/samba/smb.conf:ro"
+      {%- for share_dir in service_vars.conf.share_dirs %}
+      - "{{ share_dir.in_host }}:/{{ share_dir.in_container }}"
+      {%- endfor %}
+
+networks: {}
