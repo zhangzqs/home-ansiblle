@@ -1,0 +1,28 @@
+---
+# 在目标服务主机上等待该服务端口可用
+- hosts: "{{ service }}"
+  gather_facts: false
+  pre_tasks:
+    # 检查变量
+    - name: Validate required variables
+      ansible.builtin.assert:
+        that:
+          - service != ""
+          - service_port != ""
+        fail_msg: "Missing required parameters (service/service_port)"
+  tasks:
+    - name: Wait for port to be open
+      ansible.builtin.wait_for:
+        host: "{{ service_host | default('localhost') }}"
+        port: "{{ service_port }}"
+        delay: 1
+        timeout: 10
+        state: started
+      register: wait_result
+
+    - name: Check if port is open
+      ansible.builtin.assert:
+        that:
+          - wait_result is not failed
+        fail_msg: "Port {{ service_port }} on {{ service_host | default('localhost') }} is not open after waiting."
+      when: wait_result is failed
