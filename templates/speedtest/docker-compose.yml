@@ -1,0 +1,12 @@
+name: "{{ home_name }}-speedtest"
+services:
+  speedtest:
+    image: "{{ home_images.speedtest }}"
+    container_name: "{{ home_name }}-speedtest"
+    environment:
+      TZ: "{{ home_timezone }}"
+    restart: unless-stopped
+    ports:
+      - "{{ speedtest_bind_host }}:{{ speedtest_bind_port }}:80"
+
+networks: {}
