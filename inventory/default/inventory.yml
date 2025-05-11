@@ -74,3 +74,9 @@ all:
       vars:
         speedtest_bind_host: "{{ service_bind_host }}"
         speedtest_bind_port: 8082
+    drawio:
+      hosts:
+        my-j1900: {}
+      vars:
+        drawio_bind_host: "{{ service_bind_host }}"
+        drawio_bind_port: 8083

@@ -20,6 +20,10 @@ conf:
       - domain: "speedtest.{{ home_base_domain }}"
         http_enabled: "{{ home_http_enabled }}"
         https_enabled: "{{ home_https_enabled }}"
+    drawio:
+      - domain: "drawio.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
     mode: 0755

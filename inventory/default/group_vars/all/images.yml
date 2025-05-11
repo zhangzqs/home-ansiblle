@@ -9,3 +9,4 @@ home_images:
   portainer: portainer/portainer-ce:2.29.2-alpine
   nginx: nginx:1.28.0-alpine
   speedtest: adolfintel/speedtest:latest
+  drawio: jgraph/drawio

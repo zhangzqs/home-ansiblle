@@ -1,0 +1,12 @@
+name: "{{ home_name }}-drawio"
+services:
+  drawio:
+    image: "{{ home_images.drawio }}"
+    container_name: "{{ home_name }}-drawio"
+    environment:
+      TZ: "{{ home_timezone }}"
+    restart: unless-stopped
+    ports:
+      - "{{ drawio_bind_host }}:{{ drawio_bind_port }}:8080"
+
+networks: {}
