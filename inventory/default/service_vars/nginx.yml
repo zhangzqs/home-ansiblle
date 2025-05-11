@@ -40,7 +40,7 @@ conf:
         https_enabled: "{{ home_https_enabled }}"
         route_conf:
           - location: "/"
-            proxy_pass: "https://pve_nodes:8006"
+            proxy_pass: "https://pve_nodes"
 
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
