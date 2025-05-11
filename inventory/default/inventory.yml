@@ -23,7 +23,12 @@ all:
       vars: 
         node_exporter_bind_host: "{{ service_bind_host }}"
         node_exporter_bind_port: 9100
-
+    cadvisor: # 每一台机器上各部署一个cadvisor
+      hosts:
+        my-j1900: {}
+      vars:
+        cadvisor_bind_host: "{{ service_bind_host }}"
+        cadvisor_bind_port: 8080
     mosdns:
       hosts:
         my-j1900: {}

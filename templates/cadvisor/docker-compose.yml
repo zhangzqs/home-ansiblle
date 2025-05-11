@@ -1,0 +1,17 @@
+name: "{{ home_name }}-cadvisor"
+services:
+  cadvisor:
+    image: "{{ home_images.cadvisor }}"
+    container_name: "{{ home_name }}-cadvisor"
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    ports:
+      - "{{ cadvisor_bind_host }}:{{ cadvisor_bind_port }}:8080/tcp"

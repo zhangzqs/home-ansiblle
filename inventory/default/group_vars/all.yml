@@ -18,6 +18,7 @@ home_images:
   prometheus: prom/prometheus:v3.3.0
   node_exporter: prom/node-exporter:v1.9.1
   fluentd: fluentd:v1.18.0-debian-1.0
+  cadvisor: bitnami/cadvisor:0.52.1
 
 # home所有服务默认的日志收集器相关配置
 home_default_logging:
