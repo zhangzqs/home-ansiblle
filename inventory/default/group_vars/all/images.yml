@@ -1,0 +1,9 @@
+home_images:
+  mosdns: irinesistiana/mosdns:latest
+  grafana: grafana/grafana:11.6.1-ubuntu
+  prometheus: prom/prometheus:v3.3.0
+  node_exporter: prom/node-exporter:v1.9.1
+  fluentd: fluentd:v1.18.0-debian-1.0
+  cadvisor: bitnami/cadvisor:0.52.1
+  vaultwarden: vaultwarden/server:latest
+  portainer: portainer/portainer-ce:2.29.2-alpine

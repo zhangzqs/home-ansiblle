@@ -57,3 +57,11 @@ all:
       vars:
         vaultwarden_bind_host: "{{ service_bind_host }}"
         vaultwarden_bind_port: 8081
+    portainer: # 单节点部署
+      hosts:
+        my-j1900: {}
+      vars:
+        portainer_bind_host: "{{ service_bind_host }}"
+        portainer_bind_port: 9000
+        portainer_https_bind_host: "{{ service_bind_host }}"
+        portainer_https_bind_port: 9443

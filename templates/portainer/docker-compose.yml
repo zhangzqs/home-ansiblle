@@ -1,0 +1,26 @@
+name: "{{ home_name }}-portainer"
+services:
+  portainer:
+    image: "{{ home_images.portainer }}"
+    container_name: "{{ home_name }}-portainer"
+    restart: unless-stopped
+    network_mode: host
+    user: "0:0" # 由于portainer需要访问docker.sock，故使用root用户；实际上如果使用agent模式部署，则可以免去这里的root用户
+    environment:
+      TZ: "{{ home_timezone }}"
+    logging: {{ service_vars.logging.portainer }}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "{{ push_target_dir }}/password.txt:/tmp/password.txt:ro"
+      - "portainer_data:/data"
+    command: >
+      --admin-password-file=/tmp/password.txt
+      --http-enabled
+      --bind="{{ portainer_bind_host }}:{{ portainer_bind_port }}"
+      --bind-https="{{ portainer_https_bind_host }}:{{ portainer_https_bind_port }}"
+      --log-mode=JSON
+
+networks: {}
+
+volumes:
+  portainer_data: {{ service_vars.volumes.portainer_data }}
