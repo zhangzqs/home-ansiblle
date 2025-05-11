@@ -71,7 +71,7 @@
   community.docker.docker_compose_v2:
     project_src: "{{ push_target_dir }}"
     state: present
-    # recreate: always # 总是重新创建容器
+    recreate: always # 总是重新创建容器
     remove_orphans: true # 清理未定义的容器
   when:
     - push_start_service | default(false) # 默认不启动服务

@@ -1,0 +1,51 @@
+---
+# 自动挂载硬盘到指定目录下
+- name: Auto configure fstab for disk mounts
+  hosts: "{{ run_hosts }}"
+  become: yes
+  vars:
+    mounts: []
+  tasks:
+    # 检查mounts变量是否为空
+    - name: Check if mounts variable is empty
+      ansible.builtin.fail:
+        msg: "The mounts variable is empty. Please provide disk mount information."
+      when: mounts | length == 0
+
+    # 创建挂载目录
+    - name: Create mount directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ mounts }}"
+
+    # 获取磁盘的 UUID 和文件系统类型
+    - name: Get disk UUID and filesystem type
+      ansible.builtin.shell:
+        cmd: "blkid -s UUID -o value {{ item.device }} && blkid -s TYPE -o value {{ item.device }}"
+      register: disk_info
+      loop: "{{ mounts }}"
+      changed_when: false # 标记为不会触发变更
+
+    # 提取 UUID 和文件系统类型到变量
+    - name: Extract disk information
+      ansible.builtin.set_fact:
+        disk_data: "{{ disk_data | default([]) + [{
+          'uuid': item.stdout_lines[0],
+          'fstype': item.stdout_lines[1],
+          'path': item.item.path
+          }] }}"
+      loop: "{{ disk_info.results }}" # 循环 disk_info 的结果
+
+    # 配置 fstab 并挂载
+    - name: Configure fstab and mount disks
+      ansible.builtin.mount:
+        path: "{{ item.path }}"
+        src: "UUID={{ item.uuid }}"
+        fstype: "{{ item.fstype }}"
+        state: mounted
+        opts: defaults
+        dump: 0
+        passno: 0
+      loop: "{{ disk_data }}"

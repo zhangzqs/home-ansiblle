@@ -25,4 +25,12 @@ ansible-playbook playbooks/disable-systemd-resolved.yml -e 'run_hosts=my-j1900'
 
 # 部署服务
 ansible-playbook playbooks/push-service.yml -e 'service=prometheus'
+
+# 自动配置/etc/fstab挂载磁盘
+ansible-playbook playbooks/auto-config-fstab.yml -e 'run_hosts=my-j1900' --extra-vars '{
+  "mounts": [
+    {"device": "/dev/sdb1", "path": "/mnt/disk-inner"},
+    {"device": "/dev/sdc1", "path": "/mnt/disk-4t"}
+  ]
+}'
 ```
