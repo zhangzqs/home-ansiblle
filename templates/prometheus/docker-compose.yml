@@ -1,0 +1,26 @@
+name: "{{ home_name }}-prometheus"
+services:
+  prometheus:
+    container_name: "{{ home_name }}-prometheus"
+    image: "{{ home_images.prometheus }}"
+    volumes:
+      - "{{ push_target_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "{{ push_target_dir }}/rules:/rules:ro"
+      - "prometheus_data:/prometheus"
+    restart: unless-stopped
+    environment:
+      TZ: "{{ home_timezone }}"
+    logging: {{ service_vars.logging.prometheus }}
+    network_mode: host
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time={{ service_vars.conf.retention_time }}"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.listen-address={{ prometheus_bind_host }}:{{ prometheus_bind_port }}"
+
+networks: {}
+
+volumes:
+  prometheus_data: {{ service_vars.volumes.prometheus_data }}

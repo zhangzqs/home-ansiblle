@@ -22,4 +22,7 @@ ansible-playbook playbooks/init-node.yml -e 'run_hosts=my-j1900'
 
 # 禁用systemd-resolved的DNS服务，以便于使用mosdns替代
 ansible-playbook playbooks/disable-systemd-resolved.yml -e 'run_hosts=my-j1900'
+
+# 部署服务
+ansible-playbook playbooks/push-service.yml -e 'service=prometheus'
 ```

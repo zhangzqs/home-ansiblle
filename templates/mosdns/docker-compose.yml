@@ -10,3 +10,5 @@ services:
       - "{{ push_target_dir }}/config.yml:/etc/mosdns/config.yml:ro"
     network_mode: host
     logging: {{ service_vars.logging.mosdns }}
+
+networks: {}
