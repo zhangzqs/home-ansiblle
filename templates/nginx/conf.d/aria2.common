@@ -1,9 +1,11 @@
 location /jsonrpc {
     proxy_pass http://aria2_nodes/jsonrpc;
+    include /etc/nginx/conf.d/proxy.common;
     break;
 }
 
 location / {
     proxy_pass http://aria_ng_nodes;
+    include /etc/nginx/conf.d/proxy.common;
     break;
 }

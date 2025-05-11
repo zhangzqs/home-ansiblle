@@ -28,6 +28,19 @@ conf:
       - domain: "aria2.{{ home_base_domain }}"
         http_enabled: "{{ home_http_enabled }}"
         https_enabled: "{{ home_https_enabled }}"
+  custom_services:
+    upstreams:
+      - name: "pve_nodes"
+        addresses:
+          - server: "192.168.242.3:8006"
+            max_fails: 3
+    servers:
+      - domain: "pve.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
+        route_conf:
+          - location: "/"
+            proxy_pass: "https://pve_nodes:8006"
 
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
