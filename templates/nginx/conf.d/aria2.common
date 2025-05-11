@@ -1,0 +1,9 @@
+location /jsonrpc {
+    proxy_pass http://aria2_nodes/jsonrpc;
+    break;
+}
+
+location / {
+    proxy_pass http://aria_ng_nodes;
+    break;
+}

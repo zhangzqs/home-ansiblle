@@ -11,3 +11,5 @@ home_images:
   speedtest: adolfintel/speedtest:latest
   drawio: jgraph/drawio
   samba: dockurr/samba
+  aria2: p3terx/aria2-pro
+  aria_ng: p3terx/ariang

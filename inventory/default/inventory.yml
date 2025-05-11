@@ -89,3 +89,11 @@ all:
       vars:
         samba_bind_host: "{{ service_bind_host }}"
         samba_bind_port: 445
+    aria2:
+      hosts:
+        my-j1900: {}
+      vars:
+        aria2_rpc_bind_host: "{{ service_bind_host }}"
+        aria2_rpc_bind_port: 6800
+        aria_ng_bind_host: "{{ service_bind_host }}"
+        aria_ng_bind_port: 6801

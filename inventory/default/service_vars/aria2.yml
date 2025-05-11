@@ -1,0 +1,33 @@
+volumes:
+  aria2_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/config"
+      o: bind
+  aria2_downloads:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/downloads"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/config"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/downloads"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+logging:
+  aria2: "{{ home_default_logging }}"
+  aria_ng: "{{ home_default_logging }}"
