@@ -11,6 +11,9 @@ all:
 
       service_bind_host: "192.168.242.2" # 这上面的所有服务绑定到这个地址
   children:
+    home_nodes:
+      hosts:
+        my-j1900: {}
     fluentd: # 每一台机器上各部署一个fluentd
       hosts:
         my-j1900: {}

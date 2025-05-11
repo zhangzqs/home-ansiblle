@@ -1,5 +1,5 @@
 galaxy_info:
-  author: qiniu
+  author: zzq
   description: "用于在某台机器上自动部署 Docker 服务"
   min_ansible_version: "2.1"
   license: BSD-3-Clause

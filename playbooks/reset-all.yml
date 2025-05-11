@@ -1,0 +1,63 @@
+---
+# 清理目标主机上的所有 home 服务及各持久化卷
+- hosts: "{{ run_hosts | default('home_nodes') }}"
+  become: true
+  tasks:
+    # 先获取到目标安装目录下的所有文件夹，如果这些文件夹里有docker-compose.yml文件，则执行down
+    - name: Get all directories in {{ home_services_dir }}
+      ansible.builtin.find:
+        paths: "{{ home_services_dir }}"
+        file_type: directory
+      register: all_dirs
+
+    - name: Print all directories found
+      ansible.builtin.debug:
+        msg: "{{ all_dirs.files | map(attribute='path') | list }}"
+      when: all_dirs.matched > 0
+
+    - name: Get all directories with docker-compose.yml
+      ansible.builtin.find:
+        paths: "{{ item }}"
+        patterns: "docker-compose.yml"
+        recurse: false
+      register: docker_compose_files
+      loop: "{{ all_dirs.files | map(attribute='path') | list }}"
+      when: all_dirs.matched > 0
+
+    - name: Merge all docker-compose.yml files into a single list
+      ansible.builtin.set_fact:
+        all_docker_compose_files: "{{ docker_compose_files.results | map(attribute='files') | sum(start=[]) }}"
+
+    - name: Print all docker-compose.yml files found
+      ansible.builtin.debug:
+        msg: "{{ all_docker_compose_files | map(attribute='path') | list }}"
+      when: all_docker_compose_files | length > 0
+
+    - name: Stop and remove all services except fluentd
+      community.docker.docker_compose_v2:
+        project_src: "{{ item }}"
+        state: absent
+        remove_orphans: true # 清理所有compose中未定义的容器
+        remove_volumes: true # 清理所有相关的持久化卷
+      loop: "{{ all_docker_compose_files | map(attribute='path') | map('dirname') | list | reject('search', 'fluentd') | list }}"
+      when: all_docker_compose_files | length > 0
+
+    - name: Stop and remove fluentd service
+      community.docker.docker_compose_v2:
+        project_src: "{{ item }}"
+        state: absent
+        remove_orphans: true
+        remove_volumes: true
+      loop: "{{ all_docker_compose_files | map(attribute='path') | map('dirname') | select('search', 'fluentd') | list }}"
+      when: all_docker_compose_files | length > 0
+
+    # 清理所有相关路径
+    - name: Remove home_services_dir {{ home_services_dir }}
+      ansible.builtin.file:
+        path: "{{ home_services_dir }}"
+        state: absent
+
+    - name: Remove home_volumes_dir {{ home_volumes_dir }}
+      ansible.builtin.file:
+        path: "{{ home_volumes_dir }}"
+        state: absent

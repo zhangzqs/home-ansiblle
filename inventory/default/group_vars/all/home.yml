@@ -1,8 +1,8 @@
 home_name: zzq_home
 home_user: "{{ home_name }}_service"
 home_group: "{{ home_name }}_service"
-home_uid: 10000
-home_gid: 10000
+home_uid: 100000
+home_gid: 100000
 home_timezone: Asia/Shanghai
 
 home_services_dir: /home/{{ home_user }}/services # 服务配置路径
