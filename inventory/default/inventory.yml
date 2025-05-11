@@ -51,3 +51,9 @@ all:
       vars:
         grafana_bind_host: "{{ service_bind_host }}"
         grafana_bind_port: 3000
+    vaultwarden: 
+      hosts:
+        my-j1900: {}
+      vars:
+        vaultwarden_bind_host: "{{ service_bind_host }}"
+        vaultwarden_bind_port: 8081

@@ -1,0 +1,16 @@
+name: "{{ home_name }}-vaultwarden"
+services:
+  vaultwarden:
+    container_name: "{{ home_name }}-vaultwarden"
+    image: vaultwarden/server:latest
+    environment:
+      TZ: "{{ home_timezone }}"
+    volumes:
+      - /data/vaultwarden-data:/data
+    restart: unless-stopped
+    ports:
+      - "{{ vaultwarden_bind_host }}:{{ vaultwarden_bind_port }}:80"
+    logging: {{ service_vars.logging.vaultwarden }}
+networks: {}
+volumes:
+  vaultwarden_data: {{ service_vars.volumes.vaultwarden_data }}

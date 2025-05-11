@@ -1,0 +1,23 @@
+conf:
+
+logging:
+  vaultwarden: "{{ home_default_logging }}"
+
+volumes:
+  vaultwarden_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/data"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/data"
+    mode: 0755
+    owner: 0
+    group: 0
