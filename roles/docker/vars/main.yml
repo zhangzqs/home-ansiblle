@@ -23,3 +23,7 @@ docker_daemon_config:
     max-size: "10m"
     max-file: "3"
   storage-driver: "overlay2"
+  registry-mirrors: # 国内镜像源
+    - "https://docker-0.unsee.tech"
+    - "https://docker-cf.registry.cyou"
+    - "https://docker.1panel.live"

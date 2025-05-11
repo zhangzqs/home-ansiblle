@@ -1,0 +1,24 @@
+conf:
+  retention_time: 30d
+
+volumes:
+  prometheus_data: 
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/data"
+      o: bind
+
+logging:
+  prometheus: "{{ home_default_logging }}"
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+    
+  - path: "{{ home_volumes_dir }}/{{ service }}/data"
+    mode: 0755
+    owner: 65534
+    group: 65534

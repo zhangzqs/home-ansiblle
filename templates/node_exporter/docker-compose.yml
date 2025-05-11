@@ -1,0 +1,23 @@
+name: "{{ home_name }}-node-exporter"
+services:
+  node_exporter:
+    image: "{{ home_images.node_exporter }}"
+    container_name: "{{ home_name }}-node-exporter"
+    restart: unless-stopped
+    network_mode: "host"
+    user: "0:0" # 该容器需要使用root权限
+    pid: host # 该容器需要使用host的pid
+    environment:
+      TZ: "{{ home_timezone }}"
+    privileged: true
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/rootfs"
+      - "--web.listen-address={{ node_exporter_bind_host }}:{{ node_exporter_bind_port }}"
+    volumes:
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "/:/rootfs:ro"
+
+networks: {}

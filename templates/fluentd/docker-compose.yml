@@ -1,0 +1,25 @@
+name: "{{ home_name }}-fluentd"
+services:
+  fluentd:
+    image: "{{ home_images.fluentd }}"
+    container_name: "{{ home_name }}-fluentd"
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      TZ: "{{ home_timezone }}"
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: fluentd -c /fluentd/etc/fluent.conf
+    volumes:
+      - "{{ push_target_dir }}/fluent.conf:/fluentd/etc/fluent.conf:ro"
+      - "fluentd_logs:/fluentd/logs"
+      - "fluentd_plugins:/fluentd/plugins"
+
+networks: {}
+
+volumes:
+  fluentd_logs: {{ service_vars.volumes.fluentd_logs }}
+  fluentd_plugins: {{ service_vars.volumes.fluentd_plugins }}

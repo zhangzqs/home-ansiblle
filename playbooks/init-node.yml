@@ -1,0 +1,23 @@
+---
+# 指定一个主机节点，用于初始化系统环境
+- hosts: "{{ run_hosts }}" # 指定在哪个主机上执行
+  become: true # 提升权限
+  gather_facts: false # 不收集主机信息
+  tasks:
+    - name: Create group {{ home_group }}
+      ansible.builtin.group: # 先创建用户组
+        name: "{{ home_group }}"
+        system: true
+        gid: "{{ home_gid }}"
+
+    - name: Create user {{ home_user }}
+      ansible.builtin.user:
+        name: "{{ home_user }}"
+        create_home: true
+        system: true
+        shell: /bin/false # 禁止通过该用户以任何形式登录到shell中
+        uid: "{{ home_uid }}"
+        group: "{{ home_group }}"
+
+  roles:
+    - role: docker # 安装Docker

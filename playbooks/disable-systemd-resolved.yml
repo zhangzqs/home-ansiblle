@@ -1,0 +1,28 @@
+---
+# 相当于执行了
+# systemctl stop    systemd-resolved
+# systemctl disable systemd-resolved
+# systemctl mask    systemd-resolved
+- name: Disable systemd-resolved service
+  hosts: "{{ run_hosts }}"
+  become: yes
+  gather_facts: false
+  vars:
+    target_service: "systemd-resolved.service"
+  tasks:
+    # 停止服务（如果正在运行）
+    - name: Stop service if running
+      ansible.builtin.service:
+        name: "{{ target_service }}"
+        state: stopped
+
+    # 禁用服务自启动
+    - name: Disable service autostart
+      ansible.builtin.service:
+        name: "{{ target_service }}"
+        enabled: no
+
+    # 永久屏蔽服务（防止意外启动）
+    - name: Mask service permanently
+      ansible.builtin.command:
+        cmd: "systemctl mask {{ target_service }}"

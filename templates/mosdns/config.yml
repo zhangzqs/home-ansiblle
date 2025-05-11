@@ -1,0 +1,45 @@
+log:
+  level: debug
+
+api:
+  http: "{{ mosdns_api_bind_host }}:{{ mosdns_api_bind_port }}"
+
+plugins:
+  - tag: 自定义域名
+    type: "hosts"
+    args:
+      entries: {{ service_vars.conf.custom_domains }}
+
+
+  - tag: DNS缓存器
+    type: cache
+    args:
+      size: 10240
+      lazy_cache_ttl: 86400
+
+  - tag: "main"
+    type: "sequence"
+    args:
+      - exec: $自定义域名
+      - matches: ["has_resp"]
+        exec: accept
+
+      - exec: $DNS缓存器
+      - matches: ["has_resp"]
+        exec: accept
+
+      - exec: forward 223.5.5.5 223.6.6.6
+      - matches: ["has_wanted_ans"]
+        exec: accept
+
+  - tag: UDP监听
+    type: udp_server
+    args:
+      listen: "{{ mosdns_udp_bind_host }}:{{ mosdns_udp_bind_port }}"
+      entry: main
+
+  - tag: TCP监听
+    type: tcp_server
+    args:
+      listen: "{{ mosdns_tcp_bind_host }}:{{ mosdns_tcp_bind_port }}"
+      entry: main

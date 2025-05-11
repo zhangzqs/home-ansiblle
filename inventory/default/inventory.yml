@@ -3,9 +3,13 @@ all:
     localhost: # 用于在Ansible控制机上执行一些任务时使用
       ansible_connection: local
       ansible_python_interpreter: /usr/bin/python3
-    my-j1900:
-      ansible_host: my-j1900
-      service_bind_host: "192.168.242.2"
+    my-j1900: # 我的j1900工控机
+      ansible_host: "192.168.242.2"
+      ansible_user: "root"
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_private_key_file: "inventory/default/ssh_key/id_ed25519"
+
+      service_bind_host: "192.168.242.2" # 这上面的所有服务绑定到这个地址
   children:
     fluentd: # 每一台机器上各部署一个fluentd
       hosts:
@@ -21,6 +25,15 @@ all:
         node_exporter_bind_port: 9100
 
     mosdns:
+      hosts:
+        my-j1900: {}
+      vars:
+        mosdns_api_bind_host: "{{ service_bind_host }}"
+        mosdns_api_bind_port: 53
+        mosdns_tcp_bind_host: "{{ service_bind_host }}"
+        mosdns_tcp_bind_port: 53
+        mosdns_udp_bind_host: "{{ service_bind_host }}"
+        mosdns_udp_bind_port: 53
     prometheus: # 单节点部署
       hosts:
         my-j1900: {}

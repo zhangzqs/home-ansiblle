@@ -1,0 +1,40 @@
+---
+# 推送某个服务到指定的目标主机
+- hosts: "{{ service }}"
+  vars:
+    # 服务级别的变量文件
+    service_vars_file: "{{ inventory_dir }}/service_vars/{{ service }}.yml"
+    push_start_service: true
+  pre_tasks: # 在所有role之前执行的任务
+    - name: Validate required variables
+      ansible.builtin.assert:
+        that:
+          - service != ""
+          - home_user != ""
+          - home_group != ""
+        fail_msg: "Missing required parameters (service/home_user/home_group)"
+
+    # 尝试加载各个服务自身的业务变量（如果有）
+    - name: Try load service {{ service }} variables from {{ service_vars_file }}"
+      delegate_to: localhost # 变量文件的检查和加载在本地执行
+      run_once: true # 所有主机仅加载一次
+      block:
+        - name: "Check if {{ service_vars_file }} exists"
+          ansible.builtin.stat:
+            path: "{{ service_vars_file }}"
+          register: service_vars_file_stat
+
+        - name: "Include service variables if file exists"
+          ansible.builtin.include_vars:
+            name: "service_vars"
+            file: "{{ service_vars_file }}"
+          when: service_vars_file_stat.stat.exists
+  roles:
+    - role: push # 推送服务
+      vars:
+        push_precreate_dirs: "{{ service_vars.precreate_dirs | default([]) }}"
+        push_service: "{{ service }}"
+        push_user: "{{ home_user }}"
+        push_group: "{{ home_group }}"
+        push_target_dir: "{{ home_services_dir }}/{{ push_service }}"
+        push_templates_dir: "{{ playbook_dir }}/../templates/{{ service }}"

@@ -1,0 +1,32 @@
+conf:
+
+volumes:
+  fluentd_logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/logs"
+      o: bind
+
+  fluentd_plugins:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/plugins"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/logs"
+    mode: 0755
+    owner: 999
+    group: 999
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/plugins"
+    mode: 0755
+    owner: 999
+    group: 999
