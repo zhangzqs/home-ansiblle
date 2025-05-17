@@ -2,7 +2,7 @@ name: "{{ home_name }}-acme_sh"
 services:
   acme-sh:
     container_name: "{{ home_name }}-acme_sh"
-    image: "{{ home_images.acme_sh }}"
+    image: "{{ home_images.acme_sh.image }}"
     environment:
       TZ: "{{ home_timezone }}"
     volumes:

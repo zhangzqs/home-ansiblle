@@ -1,7 +1,7 @@
 name: "{{ home_name }}-cadvisor"
 services:
   cadvisor:
-    image: "{{ home_images.cadvisor }}"
+    image: "{{ home_images.cadvisor.image }}"
     container_name: "{{ home_name }}-cadvisor"
     restart: unless-stopped
     privileged: true

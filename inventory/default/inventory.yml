@@ -100,3 +100,9 @@ all:
     acme_sh:
       hosts:
         my-j1900: {}
+    immich:
+      hosts:
+        my-j1900: {}
+      vars:
+        immich_bind_host: "{{ service_bind_host }}"
+        immich_bind_port: 8084

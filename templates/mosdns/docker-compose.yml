@@ -1,7 +1,7 @@
 name: mosdns
 services:
   mosdns:
-    image: "{{ home_images.mosdns }}"
+    image: "{{ home_images.mosdns.image }}"
     container_name: "{{ home_name }}-mosdns"
     restart: unless-stopped
     environment:

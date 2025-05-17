@@ -2,7 +2,7 @@ name: "{{ home_name }}-prometheus"
 services:
   prometheus:
     container_name: "{{ home_name }}-prometheus"
-    image: "{{ home_images.prometheus }}"
+    image: "{{ home_images.prometheus.image }}"
     volumes:
       - "{{ push_target_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
       - "{{ push_target_dir }}/rules:/rules:ro"

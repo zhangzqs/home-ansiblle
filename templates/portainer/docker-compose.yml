@@ -1,7 +1,7 @@
 name: "{{ home_name }}-portainer"
 services:
   portainer:
-    image: "{{ home_images.portainer }}"
+    image: "{{ home_images.portainer.image }}"
     container_name: "{{ home_name }}-portainer"
     restart: unless-stopped
     network_mode: host

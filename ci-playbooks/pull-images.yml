@@ -1,0 +1,35 @@
+---
+# 选择一个目标主机执行，用于在目标主机上并行拉取所有需要的Docker镜像
+# 如果运行的目标机器使用的非root用户，则需要使用 --ask-become-pass 参数
+- name: Pull all docker image
+  become: true # Docker 操作需要 sudo 提权
+  hosts: "localhost" # 指定在哪个主机上执行
+  tasks:
+    - name: "Pull docker images sequentially"
+      block:
+        - name: Pull docker image
+          community.docker.docker_image: # 使用 Docker 模块
+            name: "{{ item.value.image }}" # 引用镜像名称
+            source: pull # 指定拉取操作
+            force_source: false # 如果镜像已存在则不重复拉取
+          when: not item.value.skip_pull | default(false) # 跳过标记为 skip_pull 的镜像
+          loop: "{{ home_images | dict2items }}" # 遍历字典
+          register: pull_result # 返回结果
+
+    - name: Output pull image results
+      block:
+        - name: Get final image list
+          ansible.builtin.command: docker images --format "{{ '{{.Repository}}:{{.Tag}}' }}"
+          register: final_images
+          changed_when: false
+
+        - name: Print failed images
+          ansible.builtin.debug:
+            msg: "Failed to pull images: {{ missing_images }}"
+          vars:
+            missing_images: "{{ home_images.values() | difference(final_images.stdout_lines) }}"
+
+        - name: Print successful images
+          ansible.builtin.debug:
+            msg: "Successfully pulled images: {{ home_images.values() | intersect(final_images.stdout_lines) }}"
+      when: (pull_result is defined and pull_result is not skipped) or (async_results is defined and async_results is not skipped)

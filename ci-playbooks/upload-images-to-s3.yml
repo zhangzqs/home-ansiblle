@@ -1,0 +1,118 @@
+---
+# 该playbook用于将本地文件系统中的所有镜像上传到一个s3存储桶上
+- name: Upload Docker Images to S3 Bucket
+  hosts: localhost # 在CI上本地执行
+  gather_facts: false
+  vars:
+    # 指定要上传的镜像所在目录
+    images_dir: "{{ home_image_offline_s3.local_dir }}"
+    # 指定S3存储桶名称
+    s3_bucket_name: "{{ home_image_offline_s3.bucket_name }}"
+    # 指定存储区域
+    s3_endpoint_url: "{{ home_image_offline_s3.endpoint_url }}"
+    # 指定存储 Access Key
+    s3_access_key: "{{ home_secrets.home_image_offline_s3.access_key }}"
+    # 指定存储 Secret Key
+    s3_secret_key: "{{ home_secrets.home_image_offline_s3.secret_key }}"
+    # 指定存储前缀
+    s3_prefix: "{{ home_image_offline_s3.prefix }}"
+    # 指定存储区域
+    s3_region: "{{ home_image_offline_s3.region }}"
+  tasks:
+    # 断言检查输入参数
+    - name: Validate required variables
+      ansible.builtin.assert:
+        that:
+          - images_dir is defined
+          - s3_bucket_name is defined
+          - s3_access_key != ""
+          - s3_secret_key != ""
+        fail_msg: "Missing required parameter (images_dir, s3_bucket_name, s3_access_key, s3_secret_key)"
+
+    # 检查 .tar.gz 文件的存在性
+    - name: Check all images have been saved
+      block:
+        - name: Check for existing .tar.gz files
+          ansible.builtin.stat:
+            path: "{{ images_dir }}/{{ item.value.offline_file }}.tar.gz"
+            get_checksum: no
+            get_mime: no
+            get_attributes: no
+          register: gz_check
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.key }}"
+
+        # 合并检查结果
+        - name: Combine checks into combined_checks
+          ansible.builtin.set_fact:
+            combined_checks: "{{ combined_checks | default([]) + [{
+              'key': item.key,
+              'offline_file': item.value.offline_file,
+              'gz_exists': (gz_check.results | selectattr('item.key', 'equalto', item.key) | first).stat.exists | default(false),
+              }]
+              }}"
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.key }}"
+
+        # 确保所有 .tar.gz 文件都存在
+        - name: Fail if any .tar.gz file is missing
+          ansible.builtin.fail:
+            msg: "The following images are missing: {{ combined_checks | selectattr('gz_exists', 'equalto', false) | map(attribute='key') | list }}"
+          when: combined_checks | selectattr('gz_exists', 'equalto', false) | length > 0
+
+    # 检查bucket上是否存在这些镜像文件
+    - name: Check if .tar.gz files exist in S3
+      amazon.aws.s3_object_info:
+        bucket_name: "{{ s3_bucket_name }}"
+        object_name: "{{ s3_prefix }}{{ item.offline_file }}.tar.gz"
+        endpoint_url: "{{ s3_endpoint_url }}"
+        region: "{{ s3_region }}"
+        aws_access_key: "{{ s3_access_key }}"
+        aws_secret_key: "{{ s3_secret_key }}"
+      loop: "{{ combined_checks }}"
+      loop_control:
+        label: "{{ item.key }}"
+      register: s3_check
+      failed_when: false # 当 S3 上的文件不存在时报错404时，不要认为任务失败，继续执行
+
+    # 提取出所有不存在的文件
+    - name: Set fact for missing files
+      ansible.builtin.set_fact: # 过滤提取出s3_check.results中存在item.error.code且item.error.code=='404'的item.item.offline_file
+        missing_offline_files: "{{ s3_check.results
+          | selectattr('error', 'defined')
+          | selectattr('error.code', 'equalto', '404')
+          | map(attribute='item.offline_file')
+          }}"
+        other_error_files: "{{ s3_check.results
+          | selectattr('error', 'defined')
+          | rejectattr('error.code', 'equalto', '404')
+          }}"
+
+    # 输出需要上传的文件
+    - name: Debug missing files
+      ansible.builtin.debug:
+        msg: "Need to upload offline files: {{ missing_offline_files }}"
+
+    # 如果存在非404错误的文件，则报错
+    - name: Fail if there are other errors
+      ansible.builtin.fail:
+        msg: "The following files encountered unexpected errors: {{ other_error_files }}"
+      when: other_error_files | length > 0
+
+    # 循环上传文件
+    - name: Upload .tar.gz files to S3
+      amazon.aws.s3_object:
+        bucket: "{{ s3_bucket_name }}"
+        object: "{{ s3_prefix }}{{ item }}.tar.gz"
+        src: "{{ images_dir }}/{{ item }}.tar.gz"
+        mode: put
+        region: "{{ s3_region }}"
+        aws_access_key: "{{ s3_access_key }}"
+        aws_secret_key: "{{ s3_secret_key }}"
+        endpoint_url: "{{ s3_endpoint_url }}"
+      retries: 3
+      loop: "{{ missing_offline_files }}"
+      loop_control:
+        label: "{{ item }}"

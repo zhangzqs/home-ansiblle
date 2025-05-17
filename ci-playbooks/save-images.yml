@@ -1,0 +1,123 @@
+---
+# 该playbook用于在CI运行，保存所有需要的镜像到本地一个指定的目录中
+- name: Save Docker Images
+  hosts: "localhost" # 在CI上本地运行
+  gather_facts: true
+  vars:
+    images_dir: "{{ home_image_offline_s3.local_dir }}"
+  tasks:
+    # 预检查当前所有镜像是否已经被拉取
+    - name: Precheck all image have pulled
+      block:
+        - name: Preload image metadata
+          become: true
+          community.docker.docker_image_info:
+            name: "{{ item.value.image }}"
+          register: image_metadata
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.value.image }}"
+
+        - name: Check all images exist
+          ansible.builtin.assert:
+            that:
+              - item.images is defined
+              - item.images | length > 0
+            fail_msg: "Image {{ item.item.value }} not found"
+          loop: "{{ image_metadata.results }}"
+          loop_control:
+            label: "{{ item.item.value }}"
+
+    # 确保目标文件夹已存在
+    - name: Ensure image directory exists
+      ansible.builtin.file:
+        path: "{{ images_dir }}"
+        state: directory
+        mode: "0755"
+
+    # 检查需要导出的镜像文件是否已经存在
+    - name: Check for existing tar and gz files
+      block:
+        # 检查 tar.gz 文件的存在性
+        - name: Check existing tar.gz files
+          ansible.builtin.stat:
+            path: "{{ images_dir }}/{{ item.value.offline_file }}.tar.gz"
+            get_checksum: no # 这里只是判断文件存在性，不需要计算校验和
+            get_mime: no
+            get_attributes: no
+          register: gz_check
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.key }}"
+
+        # 检查 tar 文件的存在性
+        - name: Check existing tar files
+          ansible.builtin.stat:
+            path: "{{ images_dir }}/{{ item.value.offline_file }}.tar"
+            get_checksum: no # 这里只是判断文件存在性，不需要计算校验和
+            get_mime: no
+            get_attributes: no
+          register: tar_check
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.key }}"
+
+        # 更安全的合并方式
+        - name: Combine checks into combined_checks
+          ansible.builtin.set_fact:
+            combined_checks: "{{ combined_checks | default([]) + [{
+              'key': item.key,
+              'image': item.value.image,
+              'offline_file': item.value.offline_file,
+              'gz_exists': (gz_check.results | selectattr('item.key', 'equalto', item.key) | first).stat.exists | default(false),
+              'tar_exists': (tar_check.results | selectattr('item.key', 'equalto', item.key) | first).stat.exists | default(false),
+              }] }}"
+          loop: "{{ home_images | dict2items }}"
+          loop_control:
+            label: "{{ item.key }}"
+
+        # 更清晰的调试输出
+        - name: Show combined results
+          ansible.builtin.debug:
+            msg: "{{ item.key }} - gz_exists: {{ item.gz_exists }}, tar_exists: {{ item.tar_exists }}"
+          loop: "{{ combined_checks }}"
+          loop_control:
+            label: "{{ item.key }}"
+          when: item.gz_exists or item.tar_exists
+
+    - name: "Save images tar files"
+      community.docker.docker_image:
+        name: "{{ item.image }}"
+        state: "present"
+        archive_path: "{{ images_dir }}/{{ item.offline_file }}.tar"
+        source: local
+      loop: "{{ combined_checks }}"
+      loop_control:
+        label: "{{ item.key }}"
+      when: # tar和tar.gz文件都不存在时执行镜像导出任务
+        - not item.tar_exists
+        - not item.gz_exists
+
+    # 修改文件权限
+    - name: "Change ownership of raw tar files"
+      ansible.builtin.file:
+        path: "{{ images_dir }}/{{ item.offline_file }}.tar"
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+      loop: "{{ combined_checks }}"
+      loop_control:
+        label: "{{ item.key }}"
+      when: # 对于 tar 文件，修改权限
+        - item.tar_exists
+        - not item.gz_exists
+
+    # 压缩文件
+    - name: "Gzip compress raw tar files"
+      ansible.builtin.command:
+        cmd: "gzip -9 {{ images_dir }}/{{ item.offline_file }}.tar"
+      loop: "{{ combined_checks }}"
+      loop_control:
+        label: "{{ item.key }}"
+      when: # 对于 tar.gz 文件，压缩文件
+        - item.tar_exists
+        - not item.gz_exists

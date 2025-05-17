@@ -1,0 +1,48 @@
+conf:
+
+logging:
+  immich_server: "{{ home_default_logging }}"
+  immich_machine_learning: "{{ home_default_logging }}"
+  immich_redis: "{{ home_default_logging }}"
+  immich_postgres: "{{ home_default_logging }}"
+
+volumes:
+  immich_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/immich_data"
+      o: bind
+  immich_machine_learning_model_cache:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/immich_machine_learning_model_cache"
+      o: bind
+  immich_postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/immich_postgres_data"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/immich_data"
+    mode: 0755
+    owner: 0
+    group: 0
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/immich_machine_learning_model_cache"
+    mode: 0755
+    owner: 0
+    group: 0
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/immich_postgres_data"
+    mode: 0755
+    owner: 0
+    group: 0

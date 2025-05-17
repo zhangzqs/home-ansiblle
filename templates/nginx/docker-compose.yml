@@ -1,7 +1,7 @@
 name: "{{ home_name }}-nginx"
 services:
   nginx:
-    image: "{{ home_images.nginx }}"
+    image: "{{ home_images.nginx.image }}"
     container_name: "{{ home_name }}-nginx"
     restart: unless-stopped
     network_mode: host

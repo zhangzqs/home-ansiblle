@@ -2,7 +2,7 @@ name: "{{ home_name }}-aria2"
 services:
   aria2:
     container_name: "{{ home_name }}-aria2"
-    image: "{{ home_images.aria2 }}"
+    image: "{{ home_images.aria2.image }}"
     environment:
       UMASK_SET: 022
       RPC_SECRET: "{{ home_secrets.aria2.rpc_secret }}"

@@ -1,0 +1,71 @@
+name: "{{ home_name }}-immich"
+services:
+  immich-server:
+    container_name: "{{ home_name }}-immich_server"
+    image: "{{ home_images.immich_server.image }}"
+    volumes:
+      - immich-data:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: "{{ home_timezone }}"
+      IMMICH_VERSION: release
+    depends_on:
+      - redis
+      - database
+    ports:
+      - "{{ immich_bind_host }}:{{ immich_bind_port }}:80"
+    restart: unless-stopped
+    logging: {{ service_vars.logging.immich_server }}
+    networks:
+      self-network:
+
+
+  immich-machine-learning:
+    container_name: "{{ home_name }}-immich_machine_learning"
+    image: "{{ home_images.immich_machine_learning.image }}"
+    volumes:
+      - immich-machine-learning-model-cache:/cache
+    environment:
+      TZ: "{{ home_timezone }}"
+    restart: unless-stopped
+    logging: {{ service_vars.logging.immich_machine_learning }}
+    networks:
+      self-network:
+
+  redis:
+    container_name: "{{ home_name }}-immich_redis"
+    image: "{{ home_images.immich_redis.image }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+    healthcheck:
+      test: redis-cli ping || exit 1
+    restart: unless-stopped
+    logging: {{ service_vars.logging.immich_redis }}
+    networks:
+      self-network:
+
+  database:
+    container_name: "{{ home_name }}-immich_postgres"
+    image: "{{ home_images.immich_postgres.image }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+      POSTGRES_USER: "{{ home_secrets.immich.db_username }}"
+      POSTGRES_PASSWORD: "{{ home_secrets.immich.db_password }}"
+      POSTGRES_DB: "immich"
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+    volumes:
+      - immich-postgres-data:/var/lib/postgresql/data
+    command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
+    restart: unless-stopped
+    logging: {{ service_vars.logging.immich_postgres }}
+    networks:
+      self-network:
+
+volumes:
+  immich-data: {{ service_vars.volumes.immich_data }}
+  immich-machine-learning-model-cache: {{ service_vars.volumes.immich_machine_learning_model_cache }}
+  immich-postgres-data: {{ service_vars.volumes.immich_postgres_data }}
+
+networks:
+  self-network:
+    driver: bridge

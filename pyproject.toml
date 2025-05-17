@@ -6,8 +6,10 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "ansible>=11.5.0",
+    "boto3>=1.38.18",
     "jmespath>=1.0.1",
     "mitogen>=0.3.23",
+    "requests>=2.32.3",
 ]
 
 # Python 换源

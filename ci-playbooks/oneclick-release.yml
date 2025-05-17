@@ -1,0 +1,11 @@
+---
+# 该playbook用于一键执行拉取镜像、保存镜像和上传镜像到S3存储桶的流程
+
+# Step 1: 拉取所有需要的镜像
+- import_playbook: pull-images.yml
+
+# Step 2: 保存所有镜像到本地
+- import_playbook: save-images.yml
+
+# Step 3: 上传镜像到 S3
+- import_playbook: upload-images-to-s3.yml

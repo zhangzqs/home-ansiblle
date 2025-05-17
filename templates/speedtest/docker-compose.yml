@@ -1,7 +1,7 @@
 name: "{{ home_name }}-speedtest"
 services:
   speedtest:
-    image: "{{ home_images.speedtest }}"
+    image: "{{ home_images.speedtest.image }}"
     container_name: "{{ home_name }}-speedtest"
     environment:
       TZ: "{{ home_timezone }}"

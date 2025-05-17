@@ -1,0 +1,24 @@
+---
+# 该playbook用于下载所有需要的镜像文件到本地目录
+- name: Download Docker Images from url
+  hosts: "{{ run_hosts | default('localhost') }}" # 指定目标机器进行下载
+  vars:
+    url_prefix: "https://s3.cn-east-1.qiniucs.com/images"
+    download_dir: "{{ home_image_offline_s3.local_dir }}"
+  tasks:
+    # 确保目标文件夹已存在
+    - name: Ensure download directory exists
+      ansible.builtin.file:
+        path: "{{ download_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Download files from URL
+      ansible.builtin.get_url:
+        url: "{{ url_prefix }}/{{ item.value.offline_file }}.tar.gz"
+        dest: "{{ download_dir }}/{{ item.value.offline_file }}.tar.gz"
+        force: false
+      retries: 3
+      loop: "{{ home_images | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
