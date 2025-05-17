@@ -1,2 +1,2 @@
-ssl_certificate /etc/nginx/ssl/zzq.crt;
-ssl_certificate_key /etc/nginx/ssl/zzq.key;
+ssl_certificate /etc/nginx/ssl/{{ home_base_domain }}.crt;
+ssl_certificate_key /etc/nginx/ssl/{{ home_base_domain }}.key;

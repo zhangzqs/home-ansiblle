@@ -12,6 +12,7 @@ services:
     volumes:
       - "{{ push_target_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "{{ push_target_dir }}/conf.d:/etc/nginx/conf.d:ro"
+      - "{{ push_target_dir }}/sslcerts:/etc/nginx/ssl:ro"
       - "nginx_logs:/var/log/nginx"
       - "nginx_cache:/var/cache/nginx"
     ulimits:
