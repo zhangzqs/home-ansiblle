@@ -23,7 +23,7 @@ services:
       - 6888:6888
       - 6888:6888/udp
     logging: {{ service_vars.logging.aria2 }}
-    restart: unless-stopped
+    restart: always
 
   aria-ng:
     container_name: "{{ home_name }}-aria-ng"
@@ -31,7 +31,7 @@ services:
     command: --port 6801 --ipv6
     ports:
       - "{{ aria_ng_bind_host }}:{{ aria_ng_bind_port }}:6801"
-    restart: unless-stopped
+    restart: always
     logging: {{ service_vars.logging.aria_ng }}
 
 networks: {}

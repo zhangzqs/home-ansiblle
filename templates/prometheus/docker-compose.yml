@@ -7,7 +7,7 @@ services:
       - "{{ push_target_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
       - "{{ push_target_dir }}/rules:/rules:ro"
       - "prometheus_data:/prometheus"
-    restart: unless-stopped
+    restart: always
     environment:
       TZ: "{{ home_timezone }}"
     logging: {{ service_vars.logging.prometheus }}

@@ -7,7 +7,7 @@ services:
       TZ: "{{ home_timezone }}"
     volumes:
       - /data/vaultwarden-data:/data
-    restart: unless-stopped
+    restart: always
     ports:
       - "{{ vaultwarden_bind_host }}:{{ vaultwarden_bind_port }}:80"
     logging: {{ service_vars.logging.vaultwarden }}

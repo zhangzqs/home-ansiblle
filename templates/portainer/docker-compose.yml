@@ -3,7 +3,7 @@ services:
   portainer:
     image: "{{ home_images.portainer.image }}"
     container_name: "{{ home_name }}-portainer"
-    restart: unless-stopped
+    restart: always
     network_mode: host
     user: "0:0" # 由于portainer需要访问docker.sock，故使用root用户；实际上如果使用agent模式部署，则可以免去这里的root用户
     environment:

@@ -13,7 +13,7 @@ services:
     command: daemon
     stdin_open: true
     tty: true
-    restart: unless-stopped
+    restart: always
 
 networks: {}
 

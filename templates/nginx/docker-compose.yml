@@ -3,7 +3,7 @@ services:
   nginx:
     image: "{{ home_images.nginx.image }}"
     container_name: "{{ home_name }}-nginx"
-    restart: unless-stopped
+    restart: always
     network_mode: host
     user: "0:0"
     environment:

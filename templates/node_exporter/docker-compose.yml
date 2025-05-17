@@ -3,7 +3,7 @@ services:
   node_exporter:
     image: "{{ home_images.node_exporter.image }}"
     container_name: "{{ home_name }}-node-exporter"
-    restart: unless-stopped
+    restart: always
     network_mode: "host"
     user: "0:0" # 该容器需要使用root权限
     pid: host # 该容器需要使用host的pid

@@ -10,7 +10,7 @@ services:
       GID: {{ home_gid }}
       USER: "{{ home_secrets.samba.user}}"
       PASS: "{{ home_secrets.samba.password }}"
-    restart: unless-stopped
+    restart: always
     volumes:
       - "{{ push_target_dir }}/smb.conf:/etc/samba/smb.conf:ro"
       {%- for share_dir in service_vars.conf.share_dirs %}

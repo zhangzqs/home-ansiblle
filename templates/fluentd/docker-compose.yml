@@ -3,7 +3,7 @@ services:
   fluentd:
     image: "{{ home_images.fluentd.image }}"
     container_name: "{{ home_name }}-fluentd"
-    restart: unless-stopped
+    restart: always
     network_mode: host
     environment:
       TZ: "{{ home_timezone }}"

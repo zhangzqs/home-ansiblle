@@ -5,7 +5,7 @@ services:
     container_name: "{{ home_name }}-drawio"
     environment:
       TZ: "{{ home_timezone }}"
-    restart: unless-stopped
+    restart: always
     ports:
       - "{{ drawio_bind_host }}:{{ drawio_bind_port }}:8080"
 

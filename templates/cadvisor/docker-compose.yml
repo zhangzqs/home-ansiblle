@@ -3,7 +3,7 @@ services:
   cadvisor:
     image: "{{ home_images.cadvisor.image }}"
     container_name: "{{ home_name }}-cadvisor"
-    restart: unless-stopped
+    restart: always
     privileged: true
     volumes:
       - /:/rootfs:ro

@@ -14,7 +14,7 @@ services:
       - database
     ports:
       - "{{ immich_bind_host }}:{{ immich_bind_port }}:80"
-    restart: unless-stopped
+    restart: always
     logging: {{ service_vars.logging.immich_server }}
     networks:
       self-network:
@@ -27,7 +27,7 @@ services:
       - immich-machine-learning-model-cache:/cache
     environment:
       TZ: "{{ home_timezone }}"
-    restart: unless-stopped
+    restart: always
     logging: {{ service_vars.logging.immich_machine_learning }}
     networks:
       self-network:
@@ -39,7 +39,7 @@ services:
       TZ: "{{ home_timezone }}"
     healthcheck:
       test: redis-cli ping || exit 1
-    restart: unless-stopped
+    restart: always
     logging: {{ service_vars.logging.immich_redis }}
     networks:
       self-network:
@@ -56,7 +56,7 @@ services:
     volumes:
       - immich-postgres-data:/var/lib/postgresql/data
     command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
-    restart: unless-stopped
+    restart: always
     logging: {{ service_vars.logging.immich_postgres }}
     networks:
       self-network:
