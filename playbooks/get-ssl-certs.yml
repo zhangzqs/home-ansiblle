@@ -1,0 +1,46 @@
+---
+# 通过acme.sh自动化申请一张证书
+- name: Get SSL certificates using acme.sh
+  hosts: "{{ run_hosts }}"
+  gather_facts: false
+  tasks:
+    # 加载acme.sh的配置
+    - name: Load acme.sh configuration
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/../inventory/default/service_vars/acme_sh.yml"
+        name: acme_service_vars
+
+    # 执行 docker exec -it "{{ home_name }}-acme_sh" /run.sh
+    - name: Execute acme.sh script
+      community.docker.docker_container_exec:
+        container: "{{ home_name }}-acme_sh"
+        command: "/run.sh"
+        tty: true
+        timeout: 300
+      register: acme_result
+
+    # 获取证书
+    - name: Get key file content
+      community.docker.docker_container_exec:
+        container: "{{ home_name }}-acme_sh"
+        command: "cat /sslcerts/{{ home_base_domain }}.key"
+      register: key_file_content
+      changed_when: false  # 不标记为变更
+
+    - name: Get crt file content
+      community.docker.docker_container_exec:
+        container: "{{ home_name }}-acme_sh"
+        command: "cat /sslcerts/{{ home_base_domain }}.crt"
+      register: crt_file_content
+      changed_when: false  # 不标记为变更
+
+    # 保存证书到本地
+    - name: Save files to local
+      ansible.builtin.copy:
+        content: "{{ item.content }}"
+        dest: "{{ playbook_dir }}/../inventory/default/sslcerts/{{ item.dest }}"
+        mode: "0644"
+      delegate_to: localhost
+      loop:
+        - { content: "{{ key_file_content.stdout }}", dest: "{{ home_base_domain }}.key" }
+        - { content: "{{ crt_file_content.stdout }}", dest: "{{ home_base_domain }}.crt" }

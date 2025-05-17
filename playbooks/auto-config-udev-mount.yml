@@ -1,0 +1,62 @@
+---
+# 自动挂载可移动设备（兼容原 mounts 变量格式）
+- name: Configure dynamic auto-mounting for removable devices
+  hosts: "{{ run_hosts }}"
+  become: yes
+  vars:
+    mounts: []  # 保持与原脚本完全相同的输入格式
+  tasks:
+    # 检查 mounts 变量是否为空
+    - name: Check if mounts variable is empty
+      ansible.builtin.fail:
+        msg: "The mounts variable is empty. Please provide disk mount information."
+      when: mounts | length == 0
+
+    # 创建挂载目录（原逻辑保留）
+    - name: Create mount directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ mounts }}"
+
+    # 动态生成 udev 规则（关键改进点）
+    - name: Generate udev rules for removable devices
+      ansible.builtin.template:
+        src: udev-removable-mount.j2
+        dest: /etc/udev/rules.d/99-removable-mount.rules
+        mode: 0644
+
+    # 部署挂载/卸载脚本
+    - name: Deploy mount/unmount scripts
+      block:
+        - name: Install mount script
+          ansible.builtin.copy:
+            dest: /usr/local/bin/dynamic-mount.sh
+            content: |
+              #!/bin/bash
+              DEVICE="$1"
+              MOUNT_POINT="$2"
+              UUID=$(blkid -s UUID -o value "/dev/${DEVICE}")
+              FSTYPE=$(blkid -s TYPE -o value "/dev/${DEVICE}")
+
+              mkdir -p "${MOUNT_POINT}"
+              mount -t "${FSTYPE}" "/dev/${DEVICE}" "${MOUNT_POINT}" -o defaults,uid=1000,gid=1000
+              logger "Dynamically mounted /dev/${DEVICE} to ${MOUNT_POINT} (UUID: ${UUID})"
+            mode: 0755
+
+        - name: Install umount script
+          ansible.builtin.copy:
+            dest: /usr/local/bin/dynamic-umount.sh
+            content: |
+              #!/bin/bash
+              DEVICE="$1"
+              MOUNT_POINT="$2"
+              umount -l "${MOUNT_POINT}"
+              logger "Dynamically unmounted /dev/${DEVICE} from ${MOUNT_POINT}"
+            mode: 0755
+
+    # 重新加载 udev 规则
+    - name: Reload udev rules
+      ansible.builtin.command:
+        cmd: udevadm control --reload

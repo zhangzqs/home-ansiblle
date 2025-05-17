@@ -6,7 +6,7 @@ services:
     environment:
       TZ: "{{ home_timezone }}"
     volumes:
-      - ./run.sh:/run.sh:ro
+      - "{{ push_target_dir }}/run.sh:/run.sh:ro"
       - acme_home_config:/acme.sh
       - sslcerts:/sslcerts
     network_mode: host
