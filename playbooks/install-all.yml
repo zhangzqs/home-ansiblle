@@ -33,3 +33,31 @@
 - import_playbook: push-service.yml
   vars:
     service: prometheus
+
+- import_playbook: push-service.yml
+  vars:
+    service: samba
+
+- import_playbook: push-service.yml
+  vars:
+    service: aria2
+
+- import_playbook: push-service.yml
+  vars:
+    service: acme_sh
+
+- import_playbook: push-service.yml
+  vars:
+    service: immich
+
+- import_playbook: push-service.yml
+  vars:
+    service: drawio
+
+- import_playbook: push-service.yml
+  vars:
+    service: speedtest
+
+- import_playbook: push-service.yml
+  vars:
+    service: vaultwarden

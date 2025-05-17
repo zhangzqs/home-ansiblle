@@ -2,7 +2,19 @@
 # 清理目标主机上的所有 home 服务及各持久化卷
 - hosts: "{{ run_hosts | default('home_nodes') }}"
   become: true
+  vars_prompt:
+    - name: "confirm_services"
+      prompt: "确认清理机器上的所有 home 服务？(y/n)"
+      private: false
+    - name: "confirm_volumes"
+      prompt: "是否清理所有持久化卷？(y/n)"
+      private: false
   tasks:
+    - name: Check if user confirmed to clean services
+      ansible.builtin.fail:
+        msg: "用户未确认清理服务，退出。"
+      when: confirm_services != 'y'
+
     # 先获取到目标安装目录下的所有文件夹，如果这些文件夹里有docker-compose.yml文件，则执行down
     - name: Get all directories in {{ home_services_dir }}
       ansible.builtin.find:
@@ -61,3 +73,4 @@
       ansible.builtin.file:
         path: "{{ home_volumes_dir }}"
         state: absent
+      when: confirm_volumes == 'y'
