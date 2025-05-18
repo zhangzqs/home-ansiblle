@@ -44,5 +44,5 @@ precreate_dirs:
 
   - path: "{{ home_volumes_dir }}/{{ service }}/immich_postgres_data"
     mode: 0755
-    owner: 0
-    group: 0
+    owner: 999
+    group: 999

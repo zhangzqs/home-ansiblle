@@ -4,7 +4,7 @@ services:
     container_name: "{{ home_name }}-immich_server"
     image: "{{ home_images.immich_server.image }}"
     volumes:
-      - immich-data:/usr/src/app/upload
+      - immich_data:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: "{{ home_timezone }}"
@@ -24,7 +24,7 @@ services:
     container_name: "{{ home_name }}-immich_machine_learning"
     image: "{{ home_images.immich_machine_learning.image }}"
     volumes:
-      - immich-machine-learning-model-cache:/cache
+      - immich_machine_learning_model_cache:/cache
     environment:
       TZ: "{{ home_timezone }}"
     restart: always
@@ -54,7 +54,7 @@ services:
       POSTGRES_DB: "immich"
       POSTGRES_INITDB_ARGS: '--data-checksums'
     volumes:
-      - immich-postgres-data:/var/lib/postgresql/data
+      - immich_postgres_data:/var/lib/postgresql/data
     command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
     restart: always
     logging: {{ service_vars.logging.immich_postgres }}
@@ -62,9 +62,9 @@ services:
       self-network:
 
 volumes:
-  immich-data: {{ service_vars.volumes.immich_data }}
-  immich-machine-learning-model-cache: {{ service_vars.volumes.immich_machine_learning_model_cache }}
-  immich-postgres-data: {{ service_vars.volumes.immich_postgres_data }}
+  immich_data: {{ service_vars.volumes.immich_data }}
+  immich_machine_learning_model_cache: {{ service_vars.volumes.immich_machine_learning_model_cache }}
+  immich_postgres_data: {{ service_vars.volumes.immich_postgres_data }}
 
 networks:
   self-network:
