@@ -13,12 +13,11 @@ services:
       - redis
       - database
     ports:
-      - "{{ immich_bind_host }}:{{ immich_bind_port }}:80"
+      - "{{ immich_bind_host }}:{{ immich_bind_port }}:2283"
     restart: always
     logging: {{ service_vars.logging.immich_server }}
     networks:
       self-network:
-
 
   immich-machine-learning:
     container_name: "{{ home_name }}-immich_machine_learning"

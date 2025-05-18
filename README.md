@@ -20,10 +20,13 @@ ansible all -m ping
 # 初始化一个新节点，完成用户创建，Docker 环境安装
 ansible-playbook playbooks/init-node.yml -e 'run_hosts=my-j1900'
 
+# 一键部署运行所有Docker服务
+ansible-playbook playbooks/install-all.yml -e 'run_hosts=my-j1900'
+
 # 禁用systemd-resolved的DNS服务，以便于使用mosdns替代
 ansible-playbook playbooks/disable-systemd-resolved.yml -e 'run_hosts=my-j1900'
 
-# 部署服务
+# 单独部署服务
 ansible-playbook playbooks/push-service.yml -e 'service=prometheus'
 
 # 自动配置/etc/fstab挂载磁盘
@@ -33,4 +36,15 @@ ansible-playbook playbooks/auto-config-fstab.yml -e 'run_hosts=my-j1900' --extra
     {"device": "/dev/sdc1", "path": "/mnt/disk-4t"}
   ]
 }'
+
+# 清理所有服务（危险！！！）
+ansible-playbook playbooks/reset-all.yml -e 'run_hosts=my-j1900'
+
+# acme.sh 自动化申请一张SSL证书，并保存至 inventory/default/sslcerts 中
+ansible-playbook playbooks/issue-ssl.yml -e 'run_hosts=my-j1900'
+
+# 更新nginx服务配置
+ansible-playbook playbooks/push-service.yml -e 'service=nginx'
 ```
+
+## 其他 Playbook
