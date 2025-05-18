@@ -1,0 +1,8 @@
+name: "{{ home_name }}-plantuml"
+services:
+  plantuml:
+    image: "{{ home_images.plantuml.image }}"
+    container_name: "{{ home_name }}-plantuml"
+    ports:
+      - "{{ plantuml_bind_host }}:{{ plantuml_bind_port }}:8080"
+    restart: always

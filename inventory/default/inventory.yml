@@ -106,3 +106,9 @@ all:
       vars:
         immich_bind_host: "{{ service_bind_host }}"
         immich_bind_port: 8084
+    plantuml:
+      hosts:
+        my-j1900: {}
+      vars:
+        plantuml_bind_host: "{{ service_bind_host }}"
+        plantuml_bind_port: 8085

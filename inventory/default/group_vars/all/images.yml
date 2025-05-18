@@ -64,3 +64,6 @@ home_images:
   immich_postgres: 
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     offline_file: pgvecto-rs_pg14-v0.2.0_sha256_90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+  plantuml:
+    image: plantuml/plantuml-server:jetty
+    offline_file: plantuml-server_jetty
