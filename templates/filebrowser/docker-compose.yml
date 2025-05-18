@@ -1,0 +1,15 @@
+name: "{{ home_name }}-filebrowser"
+services:
+  filebrowser:
+    container_name: "{{ home_name }}-filebrowser"
+    image: "{{ home_images.filebrowser.image }}"
+    restart: always
+    volumes:
+      - /disk-inner/:/srv/disk-inner
+      - /disk-4t/:/srv/disk-4t
+      - /data:/srv/docker-data
+      - /data/filebrowser-data/filebrowser.db:/database.db
+    ports:
+      - 8080:80
+
+networks: {}

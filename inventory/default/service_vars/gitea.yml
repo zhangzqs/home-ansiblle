@@ -1,0 +1,22 @@
+conf:
+logging:
+  gitea: "{{ home_default_logging }}"
+
+volumes:
+  gitea_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/gitea_data"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/gitea_data"
+    mode: 0755
+    owner: 1000
+    group: 1000

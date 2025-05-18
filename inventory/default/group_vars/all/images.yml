@@ -67,3 +67,9 @@ home_images:
   plantuml:
     image: plantuml/plantuml-server:jetty
     offline_file: plantuml-server_jetty
+  filebrowser:
+    image: filebrowser/filebrowser
+    offline_file: filebrowser
+  gitea:
+    image: gitea/gitea:latest
+    offline_file: gitea_latest

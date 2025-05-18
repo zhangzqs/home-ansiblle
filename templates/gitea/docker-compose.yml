@@ -1,0 +1,19 @@
+name: "{{ home_name }}-gitea"
+services:
+  server:
+    image: "{{ home_images.gitea.image }}"
+    container_name: "{{ home_name }}-gitea"
+    restart: always
+    logging: {{ service_vars.logging.gitea }}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - gitea-data:/data
+    ports:
+      - "{{ gitea_bind_host }}:{{ gitea_bind_port }}:3000"
+      - "{{ gitea_ssh_bind_host }}:{{ gitea_ssh_bind_port }}:22"
+
+networks: {}
+
+volumes:
+  gitea_data: {{ service_vars.volumes.gitea_data }}

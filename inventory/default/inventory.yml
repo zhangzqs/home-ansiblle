@@ -112,3 +112,17 @@ all:
       vars:
         plantuml_bind_host: "{{ service_bind_host }}"
         plantuml_bind_port: 8085
+    filebrowser:
+      hosts:
+        my-j1900: {}
+      vars:
+        filebrowser_bind_host: "{{ service_bind_host }}"
+        filebrowser_bind_port: 8086
+    gitea:
+      hosts:
+        my-j1900: {}
+      vars:
+        gitea_bind_host: "{{ service_bind_host }}"
+        gitea_bind_port: 3001
+        gitea_ssh_bind_host: "{{ service_bind_host }}"
+        gitea_ssh_bind_port: 222
