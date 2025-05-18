@@ -1,5 +1,5 @@
 location / {
-    proxy_pass http://prometheus_nodes;
+    proxy_pass http://grafana_nodes;
     include /etc/nginx/conf.d/proxy.common;
     break;
 }

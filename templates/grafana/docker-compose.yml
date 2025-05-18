@@ -1,0 +1,19 @@
+name: "{{ home_name }}-grafana"
+services:
+  grafana:
+    container_name: "{{ home_name }}-grafana"
+    image: "{{ home_images.grafana.image }}"
+    volumes:
+      # - "{{ push_target_dir }}/grafana.ini:/etc/grafana/grafana.ini:ro"
+      - "grafana_data:/var/lib/grafana"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+    logging: {{ service_vars.logging.grafana }}
+    ports:
+      - "{{ grafana_bind_host }}:{{ grafana_bind_port }}:3000"
+
+networks: {}
+
+volumes:
+  grafana_data: {{ service_vars.volumes.grafana_data }}
