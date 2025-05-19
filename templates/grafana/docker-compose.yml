@@ -4,7 +4,7 @@ services:
     container_name: "{{ home_name }}-grafana"
     image: "{{ home_images.grafana.image }}"
     volumes:
-      # - "{{ push_target_dir }}/grafana.ini:/etc/grafana/grafana.ini:ro"
+      - "{{ push_target_dir }}/grafana.ini:/etc/grafana/grafana.ini:ro"
       - "grafana_data:/var/lib/grafana"
     restart: always
     environment:
