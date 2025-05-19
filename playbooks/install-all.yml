@@ -1,16 +1,22 @@
 - import_playbook: push-service.yml
   vars:
     service: fluentd
+  tags:
+    - fluentd
 
 - import_playbook: wait-service.yml
   vars:
     service: fluentd # 等待各个机器上的fluentd服务启动
     service_host: "{{ fluentd_bind_host }}"
     service_port: "{{ fluentd_bind_port }}"
+  tags:
+    - fluentd
   
 - import_playbook: push-service.yml
   vars:
     service: mosdns
+  tags:
+    - mosdns
 
 - import_playbook: push-service.yml
   vars:
@@ -21,43 +27,65 @@
 - import_playbook: push-service.yml
   vars:
     service: portainer
+  tags:
+    - portainer
 
 - import_playbook: push-service.yml
   vars:
     service: node_exporter
+  tags:
+    - node_exporter
 
 - import_playbook: push-service.yml
   vars:
     service: cadvisor
+  tags:
+    - cadvisor
 
 - import_playbook: push-service.yml
   vars:
     service: prometheus
+  tags:
+    - prometheus
 
 - import_playbook: push-service.yml
   vars:
     service: samba
+  tags:
+    - samba
 
 - import_playbook: push-service.yml
   vars:
     service: aria2
+  tags:
+    - aria2
 
 - import_playbook: push-service.yml
   vars:
     service: acme_sh
+  tags:
+    - acme_sh
 
 - import_playbook: push-service.yml
   vars:
     service: immich
+  tags:
+    - immich
 
 - import_playbook: push-service.yml
   vars:
     service: drawio
+  tags:
+    - drawio
 
 - import_playbook: push-service.yml
   vars:
     service: speedtest
+  tags:
+    - speedtest
 
 - import_playbook: push-service.yml
   vars:
     service: vaultwarden
+  tags:
+    - vaultwarden

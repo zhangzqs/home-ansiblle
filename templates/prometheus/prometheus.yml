@@ -15,3 +15,23 @@ scrape_configs:
     static_configs:
       - targets: # 自身指标
           - "{{ prometheus_bind_host }}:{{ prometheus_bind_port }}"
+
+  - job_name: "node_exporter"
+    static_configs:
+{%- for host in groups['node_exporter'] %}
+      - targets:
+          - "{{ hostvars[host]['node_exporter_bind_host'] }}:{{ hostvars[host]['node_exporter_bind_port'] }}"
+        labels:
+          home: "{{ home_name }}"
+          host: "{{ host }}"
+{%- endfor %}
+
+  - job_name: "cadvisor"
+    static_configs:
+{%- for host in groups['cadvisor'] %}
+      - targets:
+          - "{{ hostvars[host]['cadvisor_bind_host'] }}:{{ hostvars[host]['cadvisor_bind_port'] }}"
+        labels:
+          home: "{{ home_name }}"
+          host: "{{ host }}"
+{%- endfor %}
