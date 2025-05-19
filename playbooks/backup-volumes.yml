@@ -1,0 +1,27 @@
+---
+# 用于将 src_host 的 home_volumes_dir 目录同步到 dest_host 的 dest 目录
+
+- hosts: "{{ src_host }}"
+  gather_facts: false
+  vars:
+    backup_time: "{{ lookup('pipe', 'TZ='+home_timezone+' date +%Y%m%d') }}"
+    backup_dest: "{{ dest }}/backup_{{ backup_time }}"
+  tasks:
+    - name: 确保 rsync 已安装
+      ansible.builtin.package:
+        name: rsync
+        state: present
+
+    - name: 使用 synchronize 将 {{ src_host }}:{{ home_volumes_dir }} 同步到 {{ dest_host }}:{{ dest }}
+      ansible.posix.synchronize:
+        src: "{{ home_volumes_dir }}/"
+        dest: "{{ backup_dest }}"
+        mode: push
+        compress: yes # 压缩传输
+        delete: yes # 删除的文件也同步
+        archive: yes # 保留archive属性
+        owner: yes # 保留文件所有者
+        group: yes # 保留文件组
+        perms: yes # 保留文件权限
+        recursive: yes # 递归传输
+      delegate_to: "{{ dest_host }}"

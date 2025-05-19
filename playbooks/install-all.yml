@@ -3,6 +3,7 @@
     service: fluentd
   tags:
     - fluentd
+    - required
 
 - import_playbook: wait-service.yml
   vars:
@@ -11,24 +12,28 @@
     service_port: "{{ fluentd_bind_port }}"
   tags:
     - fluentd
+    - required
   
 - import_playbook: push-service.yml
   vars:
     service: mosdns
   tags:
     - mosdns
+    - required
 
 - import_playbook: push-service.yml
   vars:
     service: nginx
   tags:
     - nginx
+    - required
 
 - import_playbook: push-service.yml
   vars:
     service: portainer
   tags:
     - portainer
+    - required
 
 - import_playbook: push-service.yml
   vars:
@@ -41,6 +46,12 @@
     service: cadvisor
   tags:
     - cadvisor
+
+- import_playbook: push-service.yml
+  vars:
+    service: grafana
+  tags:
+    - grafana
 
 - import_playbook: push-service.yml
   vars:
