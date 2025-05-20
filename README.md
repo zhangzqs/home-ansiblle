@@ -51,13 +51,16 @@ ansible-playbook playbooks/push-service.yml -e 'service=nginx'
 
 ## 服务列表
 
-| 服务名称 | 说明 | 开放端口 | Nginx 地址 |
-| -------- | ---- | -------- | ---------- |
-
-| fluentd | 用于所有服务的日志收集 | 24224 | - |
-| mosdns | 用于家庭网络的总 DNS 服务器 | 53 | - |
-| nginx | 反向代理，各个服务统一入口服务 | 80, 443 | - |
-| portainer | Docker 容器管理服务 | 9000, 9443 | portainer.i.zhangzqs.cn |
-| node_exporter | 主机节点监控服务 | 9100 | - |
-| cadvisor | Docker 容器监控服务 | 8080 | - |
-| prometheus | 监控服务 | 9090 | prometheus.i.zhangzqs.cn |
+| 服务名称      | 说明                           | 开放端口   | Nginx 地址               |
+| ------------- | ------------------------------ | ---------- | ------------------------ |
+| fluentd       | 用于所有服务的日志收集         | 24224      | -                        |
+| mosdns        | 用于家庭网络的总 DNS 服务器    | 53         | -                        |
+| nginx         | 反向代理，各个服务统一入口服务 | 80, 443    | -                        |
+| portainer     | Docker 容器管理服务            | 9000, 9443 | portainer.i.zhangzqs.cn  |
+| node_exporter | 主机节点监控服务               | 9100       | -                        |
+| cadvisor      | Docker 容器监控服务            | 8080       | -                        |
+| prometheus    | 监控服务                       | 9090       | prometheus.i.zhangzqs.cn |
+| speedtest     | 测速服务                       | 8082       | speedtest.i.zhangzqs.cn  |
+| samba         | 文件共享服务                   | 445        | -                        |
+| plantuml      | UML 在线绘图服务               | 8085       | plantuml.i.zhangzqs.cn   |
+| gitea         | Git 代码托管服务               | 3001, 222  | gitea.i.zhangzqs.cn      |

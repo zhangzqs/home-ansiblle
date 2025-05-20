@@ -91,6 +91,12 @@
 
 - import_playbook: push-service.yml
   vars:
+    service: plantuml
+  tags:
+    - plantuml
+
+- import_playbook: push-service.yml
+  vars:
     service: speedtest
   tags:
     - speedtest
@@ -100,3 +106,9 @@
     service: vaultwarden
   tags:
     - vaultwarden
+
+- import_playbook: push-service.yml
+  vars:
+    service: gitea
+  tags:
+    - gitea
