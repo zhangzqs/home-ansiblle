@@ -8,7 +8,7 @@ services:
     user: "0:0"
     environment:
       TZ: "{{ home_timezone }}"
-    logging: {{ service_vars.logging.nginx }}
+    logging: {{ nginx.logging.nginx }}
     volumes:
       - "{{ push_target_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "{{ push_target_dir }}/conf.d:/etc/nginx/conf.d:ro"
@@ -23,5 +23,5 @@ services:
 networks: {}
 
 volumes:
-  nginx_logs: {{ service_vars.volumes.nginx_logs }}
-  nginx_cache: {{ service_vars.volumes.nginx_cache }}
+  nginx_logs: {{ nginx.volumes.nginx_logs }}
+  nginx_cache: {{ nginx.volumes.nginx_cache }}

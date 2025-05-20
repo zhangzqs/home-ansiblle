@@ -15,7 +15,7 @@ services:
     ports:
       - "{{ immich_bind_host }}:{{ immich_bind_port }}:2283"
     restart: always
-    logging: {{ service_vars.logging.immich_server }}
+    logging: {{ immich.logging.immich_server }}
     networks:
       self-network:
 
@@ -27,7 +27,7 @@ services:
     environment:
       TZ: "{{ home_timezone }}"
     restart: always
-    logging: {{ service_vars.logging.immich_machine_learning }}
+    logging: {{ immich.logging.immich_machine_learning }}
     networks:
       self-network:
 
@@ -39,7 +39,7 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
-    logging: {{ service_vars.logging.immich_redis }}
+    logging: {{ immich.logging.immich_redis }}
     networks:
       self-network:
 
@@ -56,14 +56,14 @@ services:
       - immich_postgres_data:/var/lib/postgresql/data
     command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
     restart: always
-    logging: {{ service_vars.logging.immich_postgres }}
+    logging: {{ immich.logging.immich_postgres }}
     networks:
       self-network:
 
 volumes:
-  immich_data: {{ service_vars.volumes.immich_data }}
-  immich_machine_learning_model_cache: {{ service_vars.volumes.immich_machine_learning_model_cache }}
-  immich_postgres_data: {{ service_vars.volumes.immich_postgres_data }}
+  immich_data: {{ immich.volumes.immich_data }}
+  immich_machine_learning_model_cache: {{ immich.volumes.immich_machine_learning_model_cache }}
+  immich_postgres_data: {{ immich.volumes.immich_postgres_data }}
 
 networks:
   self-network:

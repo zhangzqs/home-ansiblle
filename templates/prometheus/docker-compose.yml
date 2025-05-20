@@ -10,12 +10,12 @@ services:
     restart: always
     environment:
       TZ: "{{ home_timezone }}"
-    logging: {{ service_vars.logging.prometheus }}
+    logging: {{ prometheus.logging.prometheus }}
     network_mode: host
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.time={{ service_vars.conf.retention_time }}"
+      - "--storage.tsdb.retention.time={{ prometheus.conf.retention_time }}"
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
       - "--web.listen-address={{ prometheus_bind_host }}:{{ prometheus_bind_port }}"
@@ -23,4 +23,4 @@ services:
 networks: {}
 
 volumes:
-  prometheus_data: {{ service_vars.volumes.prometheus_data }}
+  prometheus_data: {{ prometheus.volumes.prometheus_data }}

@@ -8,7 +8,7 @@ services:
     user: "0:0" # 由于portainer需要访问docker.sock，故使用root用户；实际上如果使用agent模式部署，则可以免去这里的root用户
     environment:
       TZ: "{{ home_timezone }}"
-    logging: {{ service_vars.logging.portainer }}
+    logging: {{ portainer.logging.portainer }}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "{{ push_target_dir }}/password.txt:/tmp/password.txt:ro"
@@ -23,4 +23,4 @@ services:
 networks: {}
 
 volumes:
-  portainer_data: {{ service_vars.volumes.portainer_data }}
+  portainer_data: {{ portainer.volumes.portainer_data }}

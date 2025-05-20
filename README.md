@@ -66,3 +66,4 @@ ansible-playbook playbooks/push-service.yml -e 'service=nginx'
 | gitea         | Git 代码托管服务               | 3001, 222  | gitea.i.zhangzqs.cn      |
 | drawio        | 在线绘图服务                   | 8083       | drawio.i.zhangzqs.cn     |
 | acme_sh       | SSL 证书申请服务               | -          | -                        |
+| aria2 | 下载服务 | 6800, 6801 | aria2.i.zhangzqs.cn |
