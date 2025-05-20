@@ -64,3 +64,5 @@ ansible-playbook playbooks/push-service.yml -e 'service=nginx'
 | samba         | 文件共享服务                   | 445        | -                        |
 | plantuml      | UML 在线绘图服务               | 8085       | plantuml.i.zhangzqs.cn   |
 | gitea         | Git 代码托管服务               | 3001, 222  | gitea.i.zhangzqs.cn      |
+| drawio        | 在线绘图服务                   | 8083       | drawio.i.zhangzqs.cn     |
+| acme_sh       | SSL 证书申请服务               | -          | -                        |

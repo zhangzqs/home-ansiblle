@@ -1,8 +1,16 @@
 conf:
   retention_time: 30d
+  custom_scrape_configs:
+    - job_name: "windows_exporter"
+      static_configs:
+        - targets:
+            - "192.168.242.4:9182"
+          labels:
+            home: "{{ home_name }}"
+            host: "my-jmk-k6"
 
 volumes:
-  prometheus_data: 
+  prometheus_data:
     driver: local
     driver_opts:
       type: none
@@ -17,7 +25,7 @@ precreate_dirs:
     mode: 0755
     owner: "{{ home_uid }}"
     group: "{{ home_gid }}"
-    
+
   - path: "{{ home_volumes_dir }}/{{ service }}/data"
     mode: 0755
     owner: 65534
