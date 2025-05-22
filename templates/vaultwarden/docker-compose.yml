@@ -2,7 +2,7 @@ name: "{{ home_name }}-vaultwarden"
 services:
   vaultwarden:
     container_name: "{{ home_name }}-vaultwarden"
-    image: vaultwarden/server:latest
+    image: "{{ home_images.vaultwarden.image }}"
     environment:
       TZ: "{{ home_timezone }}"
     volumes:

@@ -27,7 +27,7 @@ services:
 
   aria-ng:
     container_name: "{{ home_name }}-aria-ng"
-    image: p3terx/ariang
+    image: "{{ home_images.aria_ng.image }}"
     command: --port 6801 --ipv6
     ports:
       - "{{ aria_ng_bind_host }}:{{ aria_ng_bind_port }}:6801"

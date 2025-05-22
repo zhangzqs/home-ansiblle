@@ -1,7 +1,7 @@
 name: "{{ home_name }}-samba"
 services:
   samba:
-    image: dockurr/samba
+    image: "{{ home_images.samba.image }}"
     container_name: "{{ home_name }}-samba"
     ports:
       - "{{ samba_bind_host }}:{{ samba_bind_port }}:445/tcp"

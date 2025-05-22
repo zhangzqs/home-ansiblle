@@ -1,4 +1,4 @@
-name: mosdns
+name: "{{ home_name }}-mosdns"
 services:
   mosdns:
     image: "{{ home_images.mosdns.image }}"

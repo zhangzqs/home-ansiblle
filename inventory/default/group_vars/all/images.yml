@@ -52,18 +52,18 @@ home_images:
   acme_sh: # https://hub.docker.com/r/neilpang/acme.sh/tags
     image: neilpang/acme.sh:3.1.1
     offline_file: neilpang_acme.sh_3.1.1
-  immich_server: 
-    image: ghcr.io/immich-app/immich-server:release
-    offline_file: immich-server_release
-  immich_machine_learning: 
-    image: ghcr.io/immich-app/immich-machine-learning:release
-    offline_file: immich-machine-learning_release
+  immich_server: # https://github.com/immich-app/immich/pkgs/container/immich-server/versions
+    image: ghcr.io/immich-app/immich-server:v1.133.0
+    offline_file: immich-server_v1.133.0
+  immich_machine_learning: # https://github.com/immich-app/immich/pkgs/container/immich-machine-learning/versions
+    image: ghcr.io/immich-app/immich-machine-learning:v1.133.0
+    offline_file: immich-machine-learning_v1.133.0
   immich_redis: 
-    image: docker.io/redis:6.2-alpine@sha256:d6c2911ac51b289db208767581a5d154544f2b2fe4914ea5056443f62dc6e900
-    offline_file: redis_6.2-alpine_sha256_d6c2911ac51b289db208767581a5d154544f2b2fe4914ea5056443f62dc6e900
+    image: docker.io/valkey/valkey:8-bookworm@sha256:ff21bc0f8194dc9c105b769aeabf9585fea6a8ed649c0781caeac5cb3c247884
+    offline_file: immich_valkey_8-bookworm_sha256_ff21bc0f
   immich_postgres: 
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-    offline_file: pgvecto-rs_pg14-v0.2.0_sha256_90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0
+    offline_file: immich_postgres_14-vectorchord0.3.0-pgvectors0.2.0
   plantuml: # https://hub.docker.com/r/plantuml/plantuml-server/tags
     image: plantuml/plantuml-server:jetty-v1.2025.2
     offline_file: plantuml-server_jetty-v1.2025.2
