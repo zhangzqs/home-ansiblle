@@ -4,6 +4,7 @@
   vars:
     # 服务级别的变量文件
     service_vars_file: "{{ inventory_dir }}/service_vars/{{ service }}.yml"
+    default_service_vars_file: "{{ inventory_dir }}/service_vars/default.yml"
     push_start_service: true
   pre_tasks: # 在所有role之前执行的任务
     - name: Validate required variables
@@ -29,6 +30,13 @@
             name: "{{ service }}"
             file: "{{ service_vars_file }}"
           when: service_vars_file_stat.stat.exists
+
+        - name: "Set service_vars to empty dict if file does not exist"
+          ansible.builtin.include_vars:
+            name: "service_vars"
+            file: "{{ default_service_vars_file }}"
+          when: not service_vars_file_stat.stat.exists
+
   roles:
     - role: push # 推送服务
       vars:

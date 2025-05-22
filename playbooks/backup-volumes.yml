@@ -4,7 +4,7 @@
 - hosts: "{{ src_host }}"
   gather_facts: false
   vars:
-    backup_time: "{{ lookup('pipe', 'TZ='+home_timezone+' date +%Y%m%d') }}"
+    backup_time: "{{ lookup('pipe', 'TZ='+home_timezone+' date +%Y-W%V') }}"
     backup_dest: "{{ dest }}/backup_{{ backup_time }}"
   tasks:
     - name: 确保 rsync 已安装
@@ -24,4 +24,6 @@
         group: yes # 保留文件组
         perms: yes # 保留文件权限
         recursive: yes # 递归传输
+        rsync_opts:
+          - "--ignore-missing-args" # 忽略同步过程中消失的文件
       delegate_to: "{{ dest_host }}"
