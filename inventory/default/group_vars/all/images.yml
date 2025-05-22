@@ -7,51 +7,51 @@ home_image_offline_s3: # s3的离线镜像备份与下载信息
   
 
 home_images:
-  mosdns: 
-    image: irinesistiana/mosdns:latest
-    offline_file: irinesistiana_mosdns_latest
-  grafana: 
-    image: grafana/grafana:11.6.1-ubuntu
-    offline_file: grafana_11.6.1-ubuntu
-  prometheus: 
-    image: prom/prometheus:v3.3.0
-    offline_file: prometheus_v3.3.0
-  node_exporter: 
+  mosdns: # https://hub.docker.com/r/irinesistiana/mosdns/tags
+    image: irinesistiana/mosdns:v5.3.3
+    offline_file: mosdns_v5.3.3
+  grafana: # https://hub.docker.com/r/grafana/grafana/tags
+    image: grafana/grafana:12.0.0-ubuntu
+    offline_file: grafana_12.0.0-ubuntu
+  prometheus: # https://hub.docker.com/r/prom/prometheus/tags
+    image: prom/prometheus:v3.4.0
+    offline_file: prometheus_v3.4.0
+  node_exporter: # https://hub.docker.com/r/prom/node-exporter/tags
     image: prom/node-exporter:v1.9.1
     offline_file: node-exporter_v1.9.1
-  fluentd: 
+  fluentd: # https://hub.docker.com/_/fluentd/tags
     image: fluentd:v1.18.0-debian-1.0
     offline_file: fluentd_v1.18.0-debian-1.0
-  cadvisor: 
+  cadvisor: # https://hub.docker.com/r/bitnami/cadvisor/tags
     image: bitnami/cadvisor:0.52.1
     offline_file: cadvisor_0.52.1
-  vaultwarden: 
-    image: vaultwarden/server:latest
-    offline_file: vaultwarden_server_latest
-  portainer: 
-    image: portainer/portainer-ce:2.29.2-alpine
+  vaultwarden: # https://hub.docker.com/r/vaultwarden/server/tags
+    image: vaultwarden/server:1.33.2
+    offline_file: vaultwarden_server_1.33.2
+  portainer: # https://hub.docker.com/r/portainer/portainer-ce/tags
+    image: portainer/portainer-ce:2.30.1
     offline_file: portainer-ce_2.29.2-alpine
-  nginx: 
+  nginx: # https://hub.docker.com/_/nginx
     image: nginx:1.28.0-alpine
     offline_file: nginx_1.28.0-alpine
-  speedtest: 
-    image: adolfintel/speedtest:latest
-    offline_file: speedtest_latest
-  drawio: 
-    image: jgraph/drawio
-    offline_file: drawio
-  samba: 
-    image: dockurr/samba
-    offline_file: samba
-  aria2: 
-    image: p3terx/aria2-pro
-    offline_file: p3terx_aria2-pro
-  aria_ng: 
-    image: p3terx/ariang
-    offline_file: p3terx_ariang
-  acme_sh: 
-    image: neilpang/acme.sh
-    offline_file: neilpang_acme_sh
+  speedtest: # https://github.com/librespeed/speedtest/pkgs/container/speedtest/versions
+    image: ghcr.io/librespeed/speedtest:5.4.1
+    offline_file: speedtest_5.4.1
+  drawio: # https://hub.docker.com/r/jgraph/drawio/tags
+    image: jgraph/drawio:27.0.5
+    offline_file: drawio_27.0.5
+  samba: # https://hub.docker.com/r/dockurr/samba/tags
+    image: dockurr/samba:4.21
+    offline_file: samba_4.21
+  aria2: # https://hub.docker.com/r/p3terx/aria2-pro/tags
+    image: p3terx/aria2-pro:202209060423
+    offline_file: p3terx_aria2-pro_202209060423
+  aria_ng: # https://hub.docker.com/r/p3terx/ariang/tags
+    image: p3terx/ariang:latest
+    offline_file: p3terx_ariang_latest
+  acme_sh: # https://hub.docker.com/r/neilpang/acme.sh/tags
+    image: neilpang/acme.sh:3.1.1
+    offline_file: neilpang_acme.sh_3.1.1
   immich_server: 
     image: ghcr.io/immich-app/immich-server:release
     offline_file: immich-server_release
@@ -64,12 +64,12 @@ home_images:
   immich_postgres: 
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     offline_file: pgvecto-rs_pg14-v0.2.0_sha256_90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-  plantuml:
-    image: plantuml/plantuml-server:jetty
-    offline_file: plantuml-server_jetty
-  filebrowser:
-    image: filebrowser/filebrowser
-    offline_file: filebrowser
-  gitea:
-    image: gitea/gitea:latest
-    offline_file: gitea_latest
+  plantuml: # https://hub.docker.com/r/plantuml/plantuml-server/tags
+    image: plantuml/plantuml-server:jetty-v1.2025.2
+    offline_file: plantuml-server_jetty-v1.2025.2
+  filebrowser: # https://hub.docker.com/r/filebrowser/filebrowser/tags
+    image: filebrowser/filebrowser:v2.32.0
+    offline_file: filebrowser_2.32.0
+  gitea: # https://hub.docker.com/r/gitea/gitea/tags
+    image: gitea/gitea:1.23
+    offline_file: gitea_1.23

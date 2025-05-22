@@ -2,7 +2,7 @@
 # 指定一个主机节点，用于初始化系统环境
 - hosts: "{{ run_hosts }}" # 指定在哪个主机上执行
   become: true # 提升权限
-  gather_facts: false # 不收集主机信息
+  gather_facts: true # 不收集主机信息
   tasks:
     - name: Create group {{ home_group }}
       ansible.builtin.group: # 先创建用户组
