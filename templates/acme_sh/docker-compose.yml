@@ -18,5 +18,5 @@ services:
 networks: {}
 
 volumes:
-  acme_home_config: {{ acme_sh.volumes.acme_home_config }}
-  sslcerts: {{ acme_sh.volumes.sslcerts }}
+  acme_home_config: {{ service_vars.volumes.acme_home_config }}
+  sslcerts: {{ service_vars.volumes.sslcerts }}

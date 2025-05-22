@@ -47,11 +47,11 @@
   tags:
     - cadvisor
 
-# - import_playbook: push-service.yml
-#   vars:
-#     service: grafana
-#   tags:
-#     - grafana
+- import_playbook: push-service.yml
+  vars:
+    service: grafana
+  tags:
+    - grafana
 
 - import_playbook: push-service.yml
   vars:

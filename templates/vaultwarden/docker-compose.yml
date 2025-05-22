@@ -10,7 +10,7 @@ services:
     restart: always
     ports:
       - "{{ vaultwarden_bind_host }}:{{ vaultwarden_bind_port }}:80"
-    logging: {{ vaultwarden.logging.vaultwarden }}
+    logging: {{ service_vars.logging.vaultwarden }}
 networks: {}
 volumes:
-  vaultwarden_data: {{ vaultwarden.volumes.vaultwarden_data }}
+  vaultwarden_data: {{ service_vars.volumes.vaultwarden_data }}

@@ -36,6 +36,6 @@ scrape_configs:
           host: "{{ host }}"
 {%- endfor %}
 
-{%- for custom_scrape_config in prometheus.conf.custom_scrape_configs %}
+{%- for custom_scrape_config in service_vars.conf.custom_scrape_configs %}
   - {{ custom_scrape_config }}
 {%- endfor %}

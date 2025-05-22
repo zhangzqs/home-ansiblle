@@ -21,5 +21,5 @@ services:
 networks: {}
 
 volumes:
-  fluentd_logs: {{ fluentd.volumes.fluentd_logs }}
-  fluentd_plugins: {{ fluentd.volumes.fluentd_plugins }}
+  fluentd_logs: {{ service_vars.volumes.fluentd_logs }}
+  fluentd_plugins: {{ service_vars.volumes.fluentd_plugins }}

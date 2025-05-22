@@ -8,7 +8,7 @@ plugins:
   - tag: 自定义域名
     type: "hosts"
     args:
-      entries: {{ mosdns.conf.custom_domains }}
+      entries: {{ service_vars.conf.custom_domains }}
 
 
   - tag: DNS缓存器

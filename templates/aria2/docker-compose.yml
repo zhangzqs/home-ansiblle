@@ -22,7 +22,7 @@ services:
       - "{{ aria2_rpc_bind_host }}:{{ aria2_rpc_bind_port }}:6800"
       - 6888:6888
       - 6888:6888/udp
-    logging: {{ aria2.logging.aria2 }}
+    logging: {{ service_vars.logging.aria2 }}
     restart: always
 
   aria-ng:
@@ -32,10 +32,10 @@ services:
     ports:
       - "{{ aria_ng_bind_host }}:{{ aria_ng_bind_port }}:6801"
     restart: always
-    logging: {{ aria2.logging.aria_ng }}
+    logging: {{ service_vars.logging.aria_ng }}
 
 networks: {}
 
 volumes:
-  aria2-config: {{ aria2.volumes.aria2_config }}
-  aria2-downloads: {{ aria2.volumes.aria2_downloads }}
+  aria2-config: {{ service_vars.volumes.aria2_config }}
+  aria2-downloads: {{ service_vars.volumes.aria2_downloads }}

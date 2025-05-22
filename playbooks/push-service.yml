@@ -27,20 +27,18 @@
 
         - name: "Include service variables if file exists"
           ansible.builtin.include_vars:
-            name: "{{ service }}"
+            name: "service_vars"
             file: "{{ service_vars_file }}"
           when: service_vars_file_stat.stat.exists
 
         - name: "Set service_vars to empty dict if file does not exist"
-          ansible.builtin.include_vars:
-            name: "service_vars"
-            file: "{{ default_service_vars_file }}"
+          ansible.builtin.set_fact:
+            service_vars: {}
           when: not service_vars_file_stat.stat.exists
-
   roles:
     - role: push # 推送服务
       vars:
-        push_precreate_dirs: "{{ vars[service].precreate_dirs | default([]) }}"
+        push_precreate_dirs: "{{ service_vars.precreate_dirs | default([]) }}"
         push_service: "{{ service }}"
         push_user: "{{ home_user }}"
         push_group: "{{ home_group }}"

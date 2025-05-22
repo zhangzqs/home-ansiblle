@@ -3,7 +3,5 @@
 home_default_logging:
   driver: fluentd
   options:
-    mode: non-blocking
-    fluentd-async: 'true' # 确保在fluentd未启动时，依然可以正常启动容器
     fluentd-address: "{{ fluentd_bind_host }}:{{ fluentd_bind_port }}"
     tag: "{{ home_name }}.{% raw %}{{ .Name }}{% endraw %}"

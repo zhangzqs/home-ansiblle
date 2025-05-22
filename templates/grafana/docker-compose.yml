@@ -10,11 +10,11 @@ services:
     restart: always
     environment:
       TZ: "{{ home_timezone }}"
-    logging: {{ grafana.logging.grafana }}
+    logging: {{ service_vars.logging.grafana }}
     ports:
       - "{{ grafana_bind_host }}:{{ grafana_bind_port }}:3000"
 
 networks: {}
 
 volumes:
-  grafana_data: {{ grafana.volumes.grafana_data }}
+  grafana_data: {{ service_vars.volumes.grafana_data }}

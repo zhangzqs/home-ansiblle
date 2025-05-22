@@ -13,7 +13,7 @@ services:
     restart: always
     volumes:
       - "{{ push_target_dir }}/smb.conf:/etc/samba/smb.conf:ro"
-      {%- for share_dir in samba.conf.share_dirs %}
+      {%- for share_dir in service_vars.conf.share_dirs %}
       - "{{ share_dir.in_host }}:/{{ share_dir.in_container }}"
       {%- endfor %}
 
