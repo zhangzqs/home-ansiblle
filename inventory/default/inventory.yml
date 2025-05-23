@@ -126,3 +126,11 @@ all:
         gitea_bind_port: 3001
         gitea_ssh_bind_host: "{{ service_bind_host }}"
         gitea_ssh_bind_port: 222
+    kms:
+      hosts:
+        my-j1900: {}
+      vars:
+        kms_app_bind_host: "{{ service_bind_host }}"
+        kms_app_bind_port: 8087
+        kms_gui_bind_host: "{{ service_bind_host }}"
+        kms_gui_bind_port: 8088

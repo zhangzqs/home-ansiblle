@@ -1,0 +1,28 @@
+name: "{{ home_name }}-kms"
+services:
+  app:
+    container_name: "{{ home_name }}-kms-app"
+    image: "{{ home_images.kms_app.image }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+    volumes:
+      - "kms_var:/kms/var"
+    ports:
+      - "{{ kms_app_bind_host }}:{{ kms_app_bind_port }}:1688/tcp"
+    restart: "always"
+
+  gui:
+    container_name: "{{ home_name }}-kms-gui"
+    image: "{{ home_images.kms_gui.image }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+    volumes:
+      - "kms_var:/kms/var"
+    ports:
+      - "{{ kms_gui_bind_host }}:{{ kms_gui_bind_port }}:3000/tcp"
+    restart: "always"
+    depends_on:
+      - app
+
+volumes:
+  kms_var: {{ service_vars.volumes.kms_var }}

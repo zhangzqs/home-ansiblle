@@ -112,3 +112,9 @@
     service: gitea
   tags:
     - gitea
+
+- import_playbook: push-service.yml
+  vars:
+    service: kms
+  tags:
+    - kms

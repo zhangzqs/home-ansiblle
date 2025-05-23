@@ -73,3 +73,9 @@ home_images:
   gitea: # https://hub.docker.com/r/gitea/gitea/tags
     image: gitea/gitea:1.23
     offline_file: gitea_1.23
+  kms_app: # https://hub.docker.com/r/11notes/kms/tags
+    image: 11notes/kms:1.0.1
+    offline_file: kms_1.0.1
+  kms_gui: # https://hub.docker.com/r/11notes/kms-gui/tags
+    image: 11notes/kms-gui:1.0.1
+    offline_file: kms-gui_1.0.1
