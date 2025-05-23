@@ -45,9 +45,23 @@ ansible-playbook playbooks/issue-ssl.yml -e 'run_hosts=my-j1900'
 
 # 更新nginx服务配置
 ansible-playbook playbooks/push-service.yml -e 'service=nginx'
+
+# 备份所有的docker volumes
+ansible-playbook playbooks/backup-volumes.yml -e 'src_host=my-j1900 dest_host=my-j1900 dest=/mnt/disk-4t/备份/NAS数据备份/volumes_backup'
 ```
 
 ## 其他 Playbook
+
+```bash
+# 拉取所有镜像到本地文件
+ansible-playbook ci-playbooks/pull-images.yml --ask-become-pass
+
+# 保存所有镜像到本地文件
+ansible-playbook ci-playbooks/save-images.yml --ask-become-pass
+
+# 增量上传镜像到远程s3服务器
+ansible-playbook ci-playbooks/upload-images-to-s3.yml --ask-become-pass
+```
 
 ## 服务列表
 

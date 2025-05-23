@@ -27,3 +27,5 @@
         rsync_opts:
           - "--ignore-missing-args" # 忽略同步过程中消失的文件
       delegate_to: "{{ dest_host }}"
+      retries: 3
+      delay: 5
