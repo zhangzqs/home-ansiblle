@@ -124,3 +124,9 @@
     service: homepage
   tags:
     - homepage
+
+- import_playbook: push-service.yml
+  vars:
+    service: dify
+  tags:
+    - dify

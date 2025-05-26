@@ -79,3 +79,24 @@ home_images:
   kms_gui: # https://hub.docker.com/r/11notes/kms-gui/tags
     image: 11notes/kms-gui:1.0.1
     offline_file: kms-gui_1.0.1
+  dify_postgres: # 数据库
+    image: postgres:17-alpine
+    offline_file: postgres_17-alpine
+  dify_redis: # 缓存数据库和消息队列
+    image: redis:6-alpine
+    offline_file: redis_6-alpine
+  dify_qdrant: # Dify 向量数据库
+    image: qdrant/qdrant:v1.14.0
+    offline_file: qdrant_v1.14.0
+  dify_sandbox: # Dify 代码节点沙箱
+    image: langgenius/dify-sandbox:0.2.10
+    offline_file: dify-sandbox_0.2.10
+  dify_plugin_daemon: # Dify 插件守护进程
+    image: langgenius/dify-plugin-daemon:0.0.5-local
+    offline_file: dify-plugin-daemon_0.0.5-local
+  dify_api_worker: # Dify API/Worker 服务
+    image: langgenius/dify-api:1.1.0
+    offline_file: dify-api_1.1.0
+  dify_web: # Dify Web 前端服务
+    image: langgenius/dify-web:1.1.0
+    offline_file: dify-web_1.1.0

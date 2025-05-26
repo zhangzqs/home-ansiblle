@@ -140,3 +140,9 @@ all:
       vars:
         homepage_bind_host: "{{ service_bind_host }}"
         homepage_bind_port: 8089
+    dify:
+      hosts:
+        my-j1900: {}
+      vars:
+        dify_bind_host: "{{ service_bind_host }}"
+        dify_bind_port: 8090

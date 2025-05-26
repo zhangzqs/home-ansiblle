@@ -1,0 +1,5 @@
+location / {
+    proxy_pass http://dify_nodes;
+    include /etc/nginx/conf.d/proxy.common;
+    break;
+}

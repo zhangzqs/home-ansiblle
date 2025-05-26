@@ -1,0 +1,149 @@
+name: "{{ home_name }}-dify"
+services:
+  redis:
+    image: "{{ home_images.dify_redis.image }}"
+    container_name: "{{ home_name }}-dify-redis"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      REDISCLI_AUTH: "{{ home_secrets.dify.redis.password }}"
+    volumes:
+      - redis_data:/data
+    command: redis-server --requirepass {{ home_secrets.dify.redis.password }}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+
+  db:
+    image: "{{ home_images.dify_postgres.image }}"
+    container_name: "{{ home_name }}-dify-db"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      PGUSER: postgres
+      POSTGRES_PASSWORD: "{{ home_secrets.dify.postgres.password }}"
+      POSTGRES_DB: "dify"
+    command: >
+      postgres -c 'max_connections=100'
+               -c 'shared_buffers=128MB'
+               -c 'work_mem=4MB'
+               -c 'maintenance_work_mem=64MB'
+               -c 'effective_cache_size=4096MB'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  sandbox:
+    image: "{{ home_images.dify_sandbox.image }}"
+    container_name: "{{ home_name }}-dify-sandbox"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      API_KEY: "{{ home_secrets.dify.sandbox.api_key }}"
+      GIN_MODE: release
+      WORKER_TIMEOUT: 15 # 执行用户代码时的最大超时时间
+      ENABLE_NETWORK: true # 启用沙盒中的网络
+      SANDBOX_PORT: 8094
+    volumes:
+      - sandbox_dependencies:/dependencies
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8194/health"]
+
+  qdrant:
+    image: "{{ home_images.dify_qdrant.image }}"
+    container_name: "{{ home_name }}-dify-qdrant"
+    restart: always
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      TZ: "{{ home_timezone }}"
+      QDRANT_API_KEY: "{{ home_secrets.dify.qdrant.api_key }}"
+
+  # plugin daemon
+  plugin_daemon:
+    image: "{{ home_images.dify_plugin_daemon.image }}"
+    container_name: "{{ home_name }}-dify-plugin-daemon"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+    env_file:
+      - plugin_daemon.env
+    volumes:
+      - plugin_daemon_storage:/app/storage
+    depends_on:
+      - db
+      - redis
+
+  api:
+    image: "{{ home_images.dify_api_worker.image }}"
+    container_name: "{{ home_name }}-dify-api"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      MODE: api
+
+      # gunicorn web服务器配置
+      SERVER_WORKER_AMOUNT: 1
+      SERVER_WORKER_CLASS: "gevent"
+      SERVER_WORKER_CONNECTIONS: 10
+      GUNICORN_TIMEOUT: 360
+
+      PLUGIN_REMOTE_INSTALL_HOST: plugin_daemon
+      PLUGIN_REMOTE_INSTALL_PORT: 5003
+      INNER_API_KEY_FOR_PLUGIN: "{{ home_secrets.dify.api.inner_key_for_plugin }}"
+
+      # 这几个URL都保持为空，将会使用当前域名地址，对反向代理友好
+      SERVICE_API_URL: ""
+      APP_WEB_URL: ""
+      CONSOLE_WEB_URL: ""
+    env_file:
+      - dify.env
+      - web.env
+    depends_on: [db, redis]
+    volumes:
+      - dify_storage:/app/api/storage
+
+  worker:
+    image: "{{ home_images.dify_api_worker.image }}"
+    container_name: "{{ home_name }}-dify-worker"
+    restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      MODE: worker
+      CELERY_AUTO_SCALE: true # 自动根据CPU核心数调整worker数量
+      INNER_API_KEY_FOR_PLUGIN: "{{ home_secrets.dify.api.inner_key_for_plugin }}"
+    env_file:
+      - dify.env
+    depends_on: [db, redis]
+    volumes:
+      - dify_storage:/app/api/storage
+
+  # Dify前端项目
+  web:
+    image: "{{ home_images.dify_web.image }}"
+    container_name: "{{ home_name }}-dify-web"
+    restart: always
+    env_file:
+      - web.env
+    environment:
+      TZ: "{{ home_timezone }}"
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - "{{ push_target_dir }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "{{ push_target_dir }}/nginx/conf.d:/etc/nginx/conf.d:ro"
+    depends_on: [api, web]
+    ports:
+      - "{{ dify_bind_host }}:{{ dify_bind_port }}:80"
+
+volumes:
+  redis_data:
+  postgres_data:
+  sandbox_dependencies:
+  qdrant_data:
+  dify_storage:
+  plugin_daemon_storage:
