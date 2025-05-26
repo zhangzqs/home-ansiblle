@@ -49,7 +49,7 @@
     owner: "{{ push_user }}"
     group: "{{ push_group }}"
   loop: "{{ query('filetree', push_templates_dir) }}"
-  when: item.state == 'directory' # 这里明确处理目录
+  when: item.state == 'directory' and (item.path | split('/') | first != 'j2') # 这里明确处理目录，但跳过j2目录
   loop_control:
     label: "DIR: {{ item.path }}"
 
@@ -63,7 +63,7 @@
     group: "{{ push_group }}"
     mode: "{{ item.mode }}"
   loop: "{{ query('filetree', push_templates_dir) }}"
-  when: item.state == 'file' or item.state == 'link' # 这里明确处理文件和链接
+  when: (item.state == 'file' or item.state == 'link') and (item.path | split('/') | first != 'j2') # 这里明确处理文件和链接
   loop_control:
     label: "FILE: {{ item.path }}"
 
