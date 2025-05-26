@@ -23,7 +23,7 @@ all:
     node_exporter: # 每一台机器上各部署一个node_exporter
       hosts:
         my-j1900: {}
-      vars: 
+      vars:
         node_exporter_bind_host: "{{ service_bind_host }}"
         node_exporter_bind_port: 9100
     cadvisor: # 每一台机器上各部署一个cadvisor
@@ -54,7 +54,7 @@ all:
       vars:
         grafana_bind_host: "{{ service_bind_host }}"
         grafana_bind_port: 3000
-    vaultwarden: 
+    vaultwarden:
       hosts:
         my-j1900: {}
       vars:
@@ -134,3 +134,9 @@ all:
         kms_app_bind_port: 8087
         kms_gui_bind_host: "{{ service_bind_host }}"
         kms_gui_bind_port: 8088
+    homepage:
+      hosts:
+        my-j1900: {}
+      vars:
+        homepage_bind_host: "{{ service_bind_host }}"
+        homepage_bind_port: 8089

@@ -1,0 +1,29 @@
+conf:
+  title: "{{ home_name }} Homepage"
+  background: "https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80"
+  services:
+    - 存储服务:
+        - Aria2:
+            href: "https://aria2.i.zhangzqs.cn"
+            description: 文件下载
+
+    - 基础设施:
+        - ProxmoxVE:
+            href: "https://pve.i.zhangzqs.cn"
+            description: 虚拟化平台
+
+    - 其他服务:
+        - Speedtest:
+            href: "https://speedtest.i.zhangzqs.cn"
+            description: 内网测速服务
+  bookmarks:
+    - 常用页面书签:
+        - Tailscale网络配置:
+            - abbr: TA
+              href: "https://login.tailscale.com/admin/machines"
+        - Github个人主页:
+            - abbr: GH
+              href: "https://github.com/zhangzqs"
+        - Blog个人博客:
+            - abbr: BL
+              href: "https://zhangzqs.cn"

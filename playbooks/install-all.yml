@@ -13,7 +13,7 @@
   tags:
     - fluentd
     - required
-  
+
 - import_playbook: push-service.yml
   vars:
     service: mosdns
@@ -118,3 +118,9 @@
     service: kms
   tags:
     - kms
+
+- import_playbook: push-service.yml
+  vars:
+    service: homepage
+  tags:
+    - homepage
