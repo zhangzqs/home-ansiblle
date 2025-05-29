@@ -130,3 +130,9 @@
     service: dify
   tags:
     - dify
+
+- import_playbook: push-service.yml
+  vars:
+    service: tailscale
+  tags:
+    - tailscale

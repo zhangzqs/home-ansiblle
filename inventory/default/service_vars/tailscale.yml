@@ -1,0 +1,21 @@
+conf:
+  extra_args: "--advertise-routes=192.168.242.0/24 --advertise-exit-node --accept-routes"
+  
+volumes:
+  tailscale_state:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/tailscale/state"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/tailscale"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/tailscale/state"
+    mode: 0755
+    owner: 0
+    group: 0

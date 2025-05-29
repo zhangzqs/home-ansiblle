@@ -100,3 +100,6 @@ home_images:
   dify_web: # Dify Web 前端服务
     image: langgenius/dify-web:1.1.0
     offline_file: dify-web_1.1.0
+  tailscale: # https://hub.docker.com/r/tailscale/tailscale/tags
+    image: tailscale/tailscale:v1.84.0
+    offline_file: tailscale_v1.84.0
