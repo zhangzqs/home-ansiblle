@@ -1,0 +1,11 @@
+process_names:
+  - comm:
+      - bash
+      - zsh
+      - prometheus
+      - vim
+  - exe:
+      - /sbin/upstart
+    cmdline:
+      - --user
+    name: upstart:-user

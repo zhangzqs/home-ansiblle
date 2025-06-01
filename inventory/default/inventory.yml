@@ -149,3 +149,9 @@ all:
     tailscale:
       hosts:
         my-j1900: {}
+    process_exporter: # 每一台机器上各部署一个process_exporter
+      hosts:
+        my-j1900: {}
+      vars:
+        process_exporter_bind_host: "{{ service_bind_host }}"
+        process_exporter_bind_port: 9256

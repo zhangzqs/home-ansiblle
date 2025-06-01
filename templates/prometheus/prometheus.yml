@@ -36,6 +36,16 @@ scrape_configs:
           host: "{{ host }}"
 {%- endfor %}
 
+  - job_name: "process_exporter"
+    static_configs:
+{%- for host in groups['process_exporter'] %}
+      - targets:
+          - "{{ hostvars[host]['process_exporter_bind_host'] }}:{{ hostvars[host]['process_exporter_bind_port'] }}"
+        labels:
+          home: "{{ home_name }}"
+          host: "{{ host }}"
+{%- endfor %}
+
 {%- for custom_scrape_config in service_vars.conf.custom_scrape_configs %}
   - {{ custom_scrape_config }}
 {%- endfor %}

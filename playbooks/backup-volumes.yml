@@ -3,9 +3,6 @@
 
 - hosts: "{{ src_host }}"
   gather_facts: false
-  vars:
-    backup_time: "{{ lookup('pipe', 'TZ='+home_timezone+' date +%Y-W%V') }}"
-    backup_dest: "{{ dest }}/backup_{{ backup_time }}"
   tasks:
     - name: 确保 rsync 已安装
       ansible.builtin.package:
@@ -15,7 +12,7 @@
     - name: 使用 synchronize 将 {{ src_host }}:{{ home_volumes_dir }} 同步到 {{ dest_host }}:{{ dest }}
       ansible.posix.synchronize:
         src: "{{ home_volumes_dir }}/"
-        dest: "{{ backup_dest }}"
+        dest: "{{ dest }}"
         mode: push
         compress: yes # 压缩传输
         delete: yes # 删除的文件也同步

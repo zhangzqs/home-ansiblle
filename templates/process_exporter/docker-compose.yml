@@ -1,0 +1,17 @@
+name: "{{ home_name }}-process-exporter"
+services:
+  process_exporter:
+    image: "{{ home_images.process_exporter.image }}"
+    container_name: "{{ home_name }}-process-exporter"
+    restart: always
+    privileged: true
+    environment:
+      TZ: "{{ home_timezone }}"
+    ports:
+      - "{{ process_exporter_bind_host }}:{{ process_exporter_bind_port }}:9256/tcp"
+    volumes:
+      - /proc:/host/proc
+      - "{{ push_target_dir }}/config.yml:/config/config.yml:ro"
+    command: --procfs /host/proc -config.path /config/config.yml
+
+networks: {}

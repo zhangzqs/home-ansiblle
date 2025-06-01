@@ -136,3 +136,9 @@
     service: tailscale
   tags:
     - tailscale
+
+- import_playbook: push-service.yml
+  vars:
+    service: process_exporter
+  tags:
+    - process_exporter
