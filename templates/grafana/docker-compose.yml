@@ -5,7 +5,6 @@ services:
     image: "{{ home_images.grafana.image }}"
     volumes:
       - "{{ push_target_dir }}/grafana.ini:/etc/grafana/grafana.ini:ro"
-      - "{{ push_target_dir }}/conf/provisioning:/provisioning_conf:ro"
       - "grafana_data:/var/lib/grafana"
     restart: always
     environment:

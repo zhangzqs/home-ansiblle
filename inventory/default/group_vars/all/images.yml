@@ -23,8 +23,8 @@ home_images:
     image: fluentd:v1.18.0-debian-1.0
     offline_file: fluentd_v1.18.0-debian-1.0
   cadvisor: # https://hub.docker.com/r/bitnami/cadvisor/tags
-    image: bitnami/cadvisor:0.52.1
-    offline_file: cadvisor_0.52.1
+    image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/gcr.io/cadvisor/cadvisor-amd64:v0.49.1
+    offline_file: cadvisor_0.49.1
   vaultwarden: # https://hub.docker.com/r/vaultwarden/server/tags
     image: vaultwarden/server:1.33.2
     offline_file: vaultwarden_server_1.33.2
