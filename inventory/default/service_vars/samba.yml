@@ -1,5 +1,9 @@
 conf:
   share_dirs:
+    - name: "zzq-nas-docker-volumns"
+      in_host: "{{ home_volumes_dir }}"
+      in_container: /mnt/docker-volumns
+
     - name: "zzq-nas-disk-inner"
       in_container: /mnt/disk-inner
       in_host: /mnt/disk-inner
