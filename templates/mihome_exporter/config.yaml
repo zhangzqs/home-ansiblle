@@ -1,0 +1,13 @@
+logger:
+  level: INFO
+  filename: "/data/app.log"
+  file_rotating_when: "midnight"
+  file_rotating_backup_count: 7
+  file_encoding: "utf-8"
+
+port: 8000
+auth_file: "/data/auth.json"
+devices_file: "/data/devices.json"
+interval_seconds: 5
+
+devices: {{ service_vars.conf.devices }}

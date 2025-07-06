@@ -155,3 +155,9 @@ all:
       vars:
         process_exporter_bind_host: "{{ service_bind_host }}"
         process_exporter_bind_port: 9256
+    mihome_exporter:
+      hosts:
+        my-j1900: {}
+      vars:
+        mihome_exporter_bind_host: "{{ service_bind_host }}"
+        mihome_exporter_bind_port: 8092

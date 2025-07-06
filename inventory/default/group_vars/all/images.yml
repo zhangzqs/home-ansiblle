@@ -106,3 +106,6 @@ home_images:
   process_exporter: # https://hub.docker.com/r/ncabatoff/process-exporter/tags
     image: ncabatoff/process-exporter:v0.8.7
     offline_file: process-exporter_v0.8.7
+  mihome_exporter: # https://github.com/zhangzqs/mihome-exporter/pkgs/container/mihome-exporter/
+    image: ghcr.io/zhangzqs/mihome-exporter:v0.0.2
+    offline_file: mihome-exporter_v0.0.2

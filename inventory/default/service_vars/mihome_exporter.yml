@@ -1,0 +1,24 @@
+conf:
+  devices:
+    - name: "电脑桌插座"
+    - name: "热水器插座"
+    - name: "台灯插座"
+    - name: "温湿度计"
+    - name: "路由器"
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+  - path: "{{ home_volumes_dir }}/{{ service }}/data"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+volumes:
+  mihome_exporter_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/data"
+      o: bind

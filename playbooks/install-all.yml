@@ -142,3 +142,9 @@
     service: process_exporter
   tags:
     - process_exporter
+
+- import_playbook: push-service.yml
+  vars:
+    service: mihome_exporter
+  tags:
+    - mihome_exporter
