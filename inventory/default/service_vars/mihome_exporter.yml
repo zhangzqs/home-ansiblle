@@ -5,6 +5,7 @@ conf:
     - name: "台灯插座"
     - name: "温湿度计"
     - name: "路由器"
+    - name: "电饭煲"
 
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
