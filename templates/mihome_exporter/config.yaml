@@ -6,8 +6,15 @@ logger:
   file_encoding: "utf-8"
 
 port: 8000
-auth_file: "/data/auth.json"
-devices_file: "/data/devices.json"
-interval_seconds: 5
 
-devices: {{ service_vars.conf.devices }}
+mihome_config:
+  auth_file: "/data/auth.json"
+  devices_file: "/data/devices.json"
+  interval_seconds: 10
+  devices: {{ service_vars.conf.devices }}
+
+qweather_config:
+  api_key: {{ home_secrets.mihome_exporter.qweather.api_key }}
+  api_host: {{ home_secrets.mihome_exporter.qweather.api_host }}
+  interval_seconds: 10
+  locations: {{ home_secrets.mihome_exporter.qweather.locations }}
