@@ -20,6 +20,17 @@ services:
         soft: 102400
         hard: 102400
 
+  nginx_vts_exporter:
+    image: "{{ home_images.nginx_vts_exporter.image }}"
+    container_name: "{{ home_name }}-nginx-vts-exporter"
+    restart: always
+    network_mode: host
+    user: "0:0"
+    environment:
+      TZ: "{{ home_timezone }}"
+      NGINX_STATUS: "http://localhost/status/format/json"
+      METRICS_ADDR: "{{ nginx_vts_exporter_bind_host }}:{{ nginx_vts_exporter_bind_port }}"
+
 networks: {}
 
 volumes:

@@ -1,0 +1,26 @@
+logger:
+  level: INFO
+  filename: "/data/app.log"
+  file_rotating_when: "midnight"
+  file_rotating_backup_count: 7
+  file_encoding: "utf-8"
+
+port: 8000
+
+mihome_config:
+  auth_file: "/data/auth.json"
+  devices_file: "/data/devices.json"
+  interval_seconds: 10
+  devices: {{ service_vars.conf.mihome_devices }}
+
+qweather_config:
+  api_key: "{{ home_secrets.my_exporter.qweather.api_key }}"
+  api_host: "{{ home_secrets.my_exporter.qweather.api_host }}"
+  interval_seconds: 10
+  locations: {{ home_secrets.my_exporter.qweather.locations }}
+
+mirouter_config:
+  base_addr: "{{ home_secrets.my_exporter.mirouter.base_addr }}"
+  password: "{{ home_secrets.my_exporter.mirouter.password }}"
+  interval_seconds: 10
+  device_name_alias_by_mac: {{ home_secrets.my_exporter.mirouter.device_name_alias_by_mac }}

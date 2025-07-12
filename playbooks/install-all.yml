@@ -145,6 +145,12 @@
 
 - import_playbook: push-service.yml
   vars:
-    service: mihome_exporter
+    service: my_exporter
   tags:
-    - mihome_exporter
+    - my_exporter
+
+- import_playbook: push-service.yml
+  vars:
+    service: rclone
+  tags:
+    - rclone

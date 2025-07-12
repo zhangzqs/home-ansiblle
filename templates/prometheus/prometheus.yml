@@ -50,12 +50,21 @@ scrape_configs:
   - {{ custom_scrape_config }}
 {%- endfor %}
 
-  - job_name: "mihome_exporter"
-    scrape_interval: 5s
+  - job_name: "my_exporter"
     static_configs:
-{%- for host in groups['mihome_exporter'] %}
+{%- for host in groups['my_exporter'] %}
       - targets:
-          - "{{ hostvars[host]['mihome_exporter_bind_host'] }}:{{ hostvars[host]['mihome_exporter_bind_port'] }}"
+          - "{{ hostvars[host]['my_exporter_bind_host'] }}:{{ hostvars[host]['my_exporter_bind_port'] }}"
+        labels:
+          home: "{{ home_name }}"
+          host: "{{ host }}"
+{%- endfor %}
+
+  - job_name: "nginx_vts_exporter"
+    static_configs:
+{%- for host in groups['nginx'] %}
+      - targets:
+          - "{{ hostvars[host]['nginx_vts_exporter_bind_host'] }}:{{ hostvars[host]['nginx_vts_exporter_bind_port'] }}"
         labels:
           home: "{{ home_name }}"
           host: "{{ host }}"

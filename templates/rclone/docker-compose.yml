@@ -1,0 +1,24 @@
+name: "{{ home_name }}-rclone"
+services:
+  rclone_webdav:
+    image: "{{ home_images.rclone.image }}"
+    container_name: "{{ home_name }}-rclone-webdav"
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: "{{ home_timezone }}"
+    command:
+      - serve
+      - webdav
+      - --addr={{ rclone_webdav_bind_host }}:{{ rclone_webdav_bind_port }}
+      - --user={{ home_secrets.rclone.webdav.username }}
+      - --pass={{ home_secrets.rclone.webdav.password }}
+      - --dir-cache-time=1d
+      - -vvvv
+      - {{ service_vars.conf.webdav.dir }}
+    volumes:
+      {%- for dir_mapping in service_vars.conf.webdav.dir_mappings %}
+      - "{{ dir_mapping.in_host }}:{{ dir_mapping.in_container }}"
+      {%- endfor %}
+
+      

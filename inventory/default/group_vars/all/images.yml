@@ -4,7 +4,9 @@ home_image_offline_s3: # s3的离线镜像备份与下载信息
   region: cn-east-1
   prefix: images/
   local_dir: /opt/home-images
-  
+
+home_image_mirrors:
+  ghcrio: "ghcr.nju.edu.cn"
 
 home_images:
   mosdns: # https://hub.docker.com/r/irinesistiana/mosdns/tags
@@ -32,10 +34,13 @@ home_images:
     image: portainer/portainer-ce:2.30.1
     offline_file: portainer-ce_2.29.2-alpine
   nginx: # https://hub.docker.com/_/nginx
-    image: nginx:1.28.0-alpine
-    offline_file: nginx_1.28.0-alpine
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/docker-nginx-vts:v1.28.0"
+    offline_file: nginx_vts_1.28.0
+  nginx_vts_exporter:  # https://hub.docker.com/r/sophos/nginx-vts-exporter/tags
+    image: "sophos/nginx-vts-exporter:v0.10.7"
+    offline_file: nginx-vts-exporter_v0.10.7
   speedtest: # https://github.com/librespeed/speedtest/pkgs/container/speedtest/versions
-    image: ghcr.io/librespeed/speedtest:5.4.1
+    image: "{{ home_image_mirrors.ghcrio }}/librespeed/speedtest:5.4.1"
     offline_file: speedtest_5.4.1
   drawio: # https://hub.docker.com/r/jgraph/drawio/tags
     image: jgraph/drawio:27.0.5
@@ -53,16 +58,16 @@ home_images:
     image: neilpang/acme.sh:3.1.1
     offline_file: neilpang_acme.sh_3.1.1
   immich_server: # https://github.com/immich-app/immich/pkgs/container/immich-server/versions
-    image: ghcr.io/immich-app/immich-server:v1.133.0
+    image: "{{ home_image_mirrors.ghcrio }}/immich-app/immich-server:v1.133.0"
     offline_file: immich-server_v1.133.0
   immich_machine_learning: # https://github.com/immich-app/immich/pkgs/container/immich-machine-learning/versions
-    image: ghcr.io/immich-app/immich-machine-learning:v1.133.0
+    image: "{{ home_image_mirrors.ghcrio }}/immich-app/immich-machine-learning:v1.133.0"
     offline_file: immich-machine-learning_v1.133.0
-  immich_redis: 
+  immich_redis:
     image: docker.io/valkey/valkey:8-bookworm@sha256:ff21bc0f8194dc9c105b769aeabf9585fea6a8ed649c0781caeac5cb3c247884
     offline_file: immich_valkey_8-bookworm_sha256_ff21bc0f
-  immich_postgres: 
-    image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0
+  immich_postgres:
+    image: "{{ home_image_mirrors.ghcrio }} /immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0"
     offline_file: immich_postgres_14-vectorchord0.3.0-pgvectors0.2.0
   plantuml: # https://hub.docker.com/r/plantuml/plantuml-server/tags
     image: plantuml/plantuml-server:jetty-v1.2025.2
@@ -106,6 +111,9 @@ home_images:
   process_exporter: # https://hub.docker.com/r/ncabatoff/process-exporter/tags
     image: ncabatoff/process-exporter:v0.8.7
     offline_file: process-exporter_v0.8.7
-  mihome_exporter: # https://github.com/zhangzqs/mihome-exporter/pkgs/container/mihome-exporter/
-    image: ghcr.io/zhangzqs/mihome-exporter:v0.0.7
-    offline_file: mihome-exporter_v0.0.7
+  my_exporter: # https://github.com/zhangzqs/my-exporter/pkgs/container/my-exporter/
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/my-exporter:v0.0.15"
+    offline_file: my-exporter_v0.0.15
+  rclone: # https://hub.docker.com/r/rclone/rclone/tags
+    image: rclone/rclone:sha-4107246
+    offline_file: rclone_sha-4107246

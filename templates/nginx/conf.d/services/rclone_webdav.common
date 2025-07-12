@@ -1,0 +1,36 @@
+location / {
+    proxy_pass http://rclone_webdav_nodes;
+    # 缓存核心配置
+    proxy_cache webdav_cache;
+    proxy_cache_revalidate on; # 支持If-Modified-Since验证
+
+    # 缓存行为控制
+    proxy_cache_use_stale error timeout updating;
+    proxy_cache_background_update on; # 后台更新
+    proxy_cache_lock on;    # 防击穿
+            
+    # Range 请求优化关键配置
+    proxy_set_header Accept-Encoding ""; # 禁用压缩以正确处理范围
+    proxy_cache_methods GET HEAD;       # 只缓存GET/HEAD
+    proxy_ignore_headers Cache-Control Expires Set-Cookie; # 强制覆盖原始头
+    add_header Cache-Control "public, max-age=604800";     # 强制浏览器缓存
+    proxy_hide_header Cache-Control;   # 隐藏后端控制头
+    proxy_hide_header Expires;
+
+    # 支持范围请求的关键指令 (Nginx 会自动处理)
+    proxy_pass_request_headers on;
+    # 切片缓存优化 (需要Nginx slice模块支持)
+    slice 1m;                 # 切割为1MB区块
+    proxy_cache_key $host$uri$slice_range;
+    proxy_set_header Range $slice_range;
+    # 设置切片缓存有效期
+    proxy_cache_valid 200 206 7d;
+
+    # 特殊处理WebDAV协议头
+    proxy_set_header Destination $http_destination;
+    proxy_set_header Depth $http_depth;
+    proxy_set_header Overwrite $http_overwrite;
+    proxy_set_header Lock-Token $http_lock_token;
+
+    proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+}

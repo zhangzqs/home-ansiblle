@@ -1,5 +1,5 @@
 conf:
-  retention_time: 30d
+  retention_time: 90d
   custom_scrape_configs:
     - job_name: "windows_exporter"
       static_configs:

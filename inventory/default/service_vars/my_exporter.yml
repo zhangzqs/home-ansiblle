@@ -1,11 +1,5 @@
 conf:
-  devices:
-    - name: "电脑桌插座"
-    - name: "热水器插座"
-    - name: "台灯插座"
-    - name: "温湿度计"
-    - name: "路由器"
-    - name: "电饭煲"
+  mihome_devices: []
 
 precreate_dirs:
   - path: "{{ home_volumes_dir }}/{{ service }}"
@@ -17,7 +11,7 @@ precreate_dirs:
     owner: "{{ home_uid }}"
     group: "{{ home_gid }}"
 volumes:
-  mihome_exporter_data:
+  my_exporter_data:
     driver: local
     driver_opts:
       type: none

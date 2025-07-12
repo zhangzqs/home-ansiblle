@@ -71,6 +71,9 @@ all:
     nginx: # 单节点部署
       hosts:
         my-j1900: {}
+      vars:
+        nginx_vts_exporter_bind_host: "{{ service_bind_host }}"
+        nginx_vts_exporter_bind_port: 9913
     speedtest:
       hosts:
         my-j1900: {}
@@ -155,9 +158,15 @@ all:
       vars:
         process_exporter_bind_host: "{{ service_bind_host }}"
         process_exporter_bind_port: 9256
-    mihome_exporter:
+    my_exporter:
       hosts:
         my-j1900: {}
       vars:
-        mihome_exporter_bind_host: "{{ service_bind_host }}"
-        mihome_exporter_bind_port: 8092
+        my_exporter_bind_host: "{{ service_bind_host }}"
+        my_exporter_bind_port: 8092
+    rclone:
+      hosts:
+        my-j1900: {}
+      vars:
+        rclone_webdav_bind_host: "{{ service_bind_host }}"
+        rclone_webdav_bind_port: 8093

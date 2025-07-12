@@ -1,0 +1,12 @@
+conf:
+  webdav:
+    dir: /data
+    dir_mappings:
+      - in_host: "{{ home_volumes_dir }}"
+        in_container: /data/docker-volumns
+
+      - in_container: /data/disk-inner
+        in_host: /mnt/disk-inner
+
+      - in_container: /data/disk-4t
+        in_host: /mnt/disk-4t
