@@ -154,3 +154,21 @@
     service: rclone
   tags:
     - rclone
+
+- import_playbook: push-service.yml
+  vars:
+    service: alertmanager
+  tags:
+    - alertmanager
+
+- import_playbook: push-service.yml
+  vars:
+    service: filebrowser
+  tags:
+    - filebrowser
+
+- import_playbook: push-service.yml
+  vars:
+    service: dlna_render
+  tags:
+    - dlna_render

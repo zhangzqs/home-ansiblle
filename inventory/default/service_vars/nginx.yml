@@ -56,6 +56,10 @@ conf:
       - domain: "rclone-webdav.{{ home_base_domain }}"
         http_enabled: "{{ home_http_enabled }}"
         https_enabled: "{{ home_https_enabled }}"
+    filebrowser:
+      - domain: "filebrowser.{{ home_base_domain }}"
+        http_enabled: "{{ home_http_enabled }}"
+        https_enabled: "{{ home_https_enabled }}"
   custom_services:
     upstreams:
       - name: "pve_nodes"

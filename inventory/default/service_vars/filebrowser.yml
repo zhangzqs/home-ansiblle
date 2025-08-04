@@ -1,1 +1,40 @@
 conf:
+  dir_mappings:
+    - in_host: "{{ home_volumes_dir }}"
+      in_container: /srv/docker-data
+
+    - in_container: /srv/disk-inner
+      in_host: /mnt/disk-inner
+
+    - in_container: /srv/disk-4t
+      in_host: /mnt/disk-4t
+
+volumes:
+  filebrowser_database:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/database"
+      o: bind
+  filebrowser_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/config"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/database"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/config"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"

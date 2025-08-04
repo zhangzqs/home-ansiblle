@@ -73,8 +73,8 @@ home_images:
     image: plantuml/plantuml-server:jetty-v1.2025.2
     offline_file: plantuml-server_jetty-v1.2025.2
   filebrowser: # https://hub.docker.com/r/filebrowser/filebrowser/tags
-    image: filebrowser/filebrowser:v2.32.0
-    offline_file: filebrowser_2.32.0
+    image: filebrowser/filebrowser:v2.40.1
+    offline_file: filebrowser_2.40.1
   gitea: # https://hub.docker.com/r/gitea/gitea/tags
     image: gitea/gitea:1.23
     offline_file: gitea_1.23
@@ -112,8 +112,14 @@ home_images:
     image: ncabatoff/process-exporter:v0.8.7
     offline_file: process-exporter_v0.8.7
   my_exporter: # https://github.com/zhangzqs/my-exporter/pkgs/container/my-exporter/
-    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/my-exporter:v0.0.15"
-    offline_file: my-exporter_v0.0.15
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/my-exporter:v0.0.16"
+    offline_file: my-exporter_v0.0.16
   rclone: # https://hub.docker.com/r/rclone/rclone/tags
     image: rclone/rclone:sha-4107246
     offline_file: rclone_sha-4107246
+  alertmanager: # https://hub.docker.com/r/prom/alertmanager/tags
+    image: prom/alertmanager:v0.28.1
+    offline_file: alertmanager_v0.28.1
+  dlna_render:
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/dlna-render:v0.0.4"
+    offline_file: dlna-render_v0.0.4

@@ -4,12 +4,21 @@ services:
     container_name: "{{ home_name }}-filebrowser"
     image: "{{ home_images.filebrowser.image }}"
     restart: always
+    environment:
+      TZ: "{{ home_timezone }}"
+      PUID: "{{ home_uid }}"
+      PGID: "{{ home_gid }}"
     volumes:
-      - /disk-inner/:/srv/disk-inner
-      - /disk-4t/:/srv/disk-4t
-      - /data:/srv/docker-data
-      - /data/filebrowser-data/filebrowser.db:/database.db
+      - filebrowser-database:/database
+      - filebrowser-config:/config
+      {%- for dir_mapping in service_vars.conf.dir_mappings %}
+      - {{ dir_mapping.in_host }}:{{ dir_mapping.in_container }}
+      {%- endfor %}
     ports:
-      - 8080:80
+      - "{{ filebrowser_bind_host }}:{{ filebrowser_bind_port }}:80"
 
 networks: {}
+
+volumes:
+  filebrowser-database: {{ service_vars.volumes.filebrowser_database }}
+  filebrowser-config: {{ service_vars.volumes.filebrowser_config }}

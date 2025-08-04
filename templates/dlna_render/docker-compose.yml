@@ -1,0 +1,13 @@
+name: "{{ home_name }}-dlna-render"
+services:
+  dlna_render:
+    image: "{{ home_images.dlna_render.image }}"
+    container_name: "{{ home_name }}-dlna-render"
+    environment:
+      TZ: "{{ home_timezone }}"
+    restart: always
+    network_mode: host
+    devices:
+      - "/dev/snd:/dev/snd" 
+
+networks: {}
