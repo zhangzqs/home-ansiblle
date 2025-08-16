@@ -41,7 +41,7 @@ ansible-playbook playbooks/auto-config-fstab.yml -e 'run_hosts=my-j1900' --extra
 ansible-playbook playbooks/reset-all.yml -e 'run_hosts=my-j1900'
 
 # acme.sh 自动化申请一张SSL证书，并保存至 inventory/default/sslcerts 中
-ansible-playbook playbooks/issue-ssl.yml -e 'run_hosts=my-j1900'
+ansible-playbook playbooks/issue-ssl-certs.yml -e 'run_hosts=my-j1900'
 
 # 更新nginx服务配置
 ansible-playbook playbooks/push-service.yml -e 'service=nginx'

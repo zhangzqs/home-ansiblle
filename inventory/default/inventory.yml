@@ -181,3 +181,15 @@ all:
     dlna_render:
       hosts:
         my-j1900: {}
+    vfs_framework:
+      hosts:
+        my-j1900: {}
+      vars:
+        vfs_framework_webdav_bind_host: "{{ service_bind_host }}"
+        vfs_framework_webdav_bind_port: 8095
+    it_tools:
+      hosts:
+        my-j1900: {}
+      vars:
+        it_tools_bind_host: "{{ service_bind_host }}"
+        it_tools_bind_port: 8096

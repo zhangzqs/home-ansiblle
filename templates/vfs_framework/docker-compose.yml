@@ -1,0 +1,14 @@
+name: "{{ home_name }}-vfs-framework"
+services:
+  vfs_framework:
+    image: "{{ home_images.vfs_framework.image }}"
+    container_name: "{{ home_name }}-vfs-framework"
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: "{{ home_timezone }}"
+    volumes:
+      - "{{ push_target_dir }}/config.yaml:/app/config.yaml:ro"
+      {%- for dir_mapping in service_vars.conf.dir_mappings %}
+      - "{{ dir_mapping.in_host }}:{{ dir_mapping.in_container }}"
+      {%- endfor %}

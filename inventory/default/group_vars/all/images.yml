@@ -36,7 +36,7 @@ home_images:
   nginx: # https://hub.docker.com/_/nginx
     image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/docker-nginx-vts:v1.28.0"
     offline_file: nginx_vts_1.28.0
-  nginx_vts_exporter:  # https://hub.docker.com/r/sophos/nginx-vts-exporter/tags
+  nginx_vts_exporter: # https://hub.docker.com/r/sophos/nginx-vts-exporter/tags
     image: "sophos/nginx-vts-exporter:v0.10.7"
     offline_file: nginx-vts-exporter_v0.10.7
   speedtest: # https://github.com/librespeed/speedtest/pkgs/container/speedtest/versions
@@ -123,3 +123,9 @@ home_images:
   dlna_render:
     image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/dlna-render:v0.0.4"
     offline_file: dlna-render_v0.0.4
+  vfs_framework:
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/vfs_framework:v0.1.1"
+    offline_file: vfs_framework_v0.1.1
+  it_tools: # https://hub.docker.com/r/corentinth/it-tools/tags
+    image: corentinth/it-tools:2024.10.22-7ca5933
+    offline_file: it-tools_2024.10.22-7ca5933

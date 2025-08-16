@@ -1,0 +1,10 @@
+name: "{{ home_name }}-it-tools"
+services:
+  it-tools:
+    container_name: "{{ home_name }}-it-tools"
+    image: "{{ home_images.it_tools.image }}"
+    environment:
+      TZ: "{{ home_timezone }}"
+    ports:
+      - "{{ it_tools_bind_host }}:{{ it_tools_bind_port }}:80/tcp"
+    restart: unless-stopped

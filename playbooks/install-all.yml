@@ -172,3 +172,15 @@
     service: dlna_render
   tags:
     - dlna_render
+
+- import_playbook: push-service.yml
+  vars:
+    service: vfs_framework
+  tags:
+    - vfs_framework
+
+- import_playbook: push-service.yml
+  vars:
+    service: it_tools
+  tags:
+    - it_tools

@@ -1,0 +1,52 @@
+conf:
+  dir_mappings:
+    - in_host: "{{ home_volumes_dir }}"
+      in_container: /data/docker-volumns
+
+    - in_host: /mnt/disk-inner
+      in_container: /data/disk-inner
+
+    - in_host: /mnt/disk-4t
+      in_container: /data/disk-4t
+
+  config:
+    - name: local-disk-4t
+      type: backend.local
+      config:
+        baseDir: /data/disk-4t
+
+    - name: local-disk-inner
+      type: backend.local
+      config:
+        baseDir: /data/disk-inner
+
+    - name: local-docker-volumes
+      type: backend.local
+      config:
+        baseDir: /data/docker-volumns
+
+    - name: union_all
+      type: backend.union
+      config:
+        items:
+          - backend: local-disk-4t
+            mountPath: /local-disk-4t
+          - backend: local-disk-inner
+            mountPath: /local-disk-inner
+          - backend: local-docker-volumes
+            mountPath: /local-docker-volumes
+    - name: webdav_server
+      type: frontend.webdav
+      config:
+        backend: union_all
+        address: "{{ vfs_framework_webdav_bind_host }}"
+        port: "{{ vfs_framework_webdav_bind_port }}"
+        authConfig:
+          type: basic
+          credentials: "{{ home_secrets.vfs_framework.webdav.credentials }}"
+
+    - name: component_diagram
+      type: builtin.component_diagram_exporter
+      config:
+        outputSVGFile: "component_diagram.svg"
+        outputPUMLFile: "component_diagram.puml"
