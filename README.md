@@ -65,18 +65,32 @@ ansible-playbook ci-playbooks/upload-images-to-s3.yml --ask-become-pass
 
 ## 服务列表
 
-| 服务名称      | 说明                           | 开放端口   | Nginx 地址               |
-| ------------- | ------------------------------ | ---------- | ------------------------ |
-| fluentd       | 用于所有服务的日志收集         | 24224      | -                        |
-| mosdns        | 用于家庭网络的总 DNS 服务器    | 53         | -                        |
-| nginx         | 反向代理，各个服务统一入口服务 | 80, 443    | -                        |
-| portainer     | Docker 容器管理服务            | 9000, 9443 | portainer.i.zhangzqs.cn  |
-| node_exporter | 主机节点监控服务               | 9100       | -                        |
-| cadvisor      | Docker 容器监控服务            | 8080       | -                        |
-| prometheus    | 监控服务                       | 9090       | prometheus.i.zhangzqs.cn |
-| speedtest     | 测速服务                       | 8082       | speedtest.i.zhangzqs.cn  |
-| samba         | 文件共享服务                   | 445        | -                        |
-| plantuml      | UML 在线绘图服务               | 8085       | plantuml.i.zhangzqs.cn   |
-| gitea         | Git 代码托管服务               | 3001, 222  | gitea.i.zhangzqs.cn      |
-| drawio        | 在线绘图服务                   | 8083       | drawio.i.zhangzqs.cn     |
-| acme_sh       | SSL 证书申请服务               | -          | -                        |
+| 服务名称         | 说明                                                              | 开放端口   | Nginx 地址                |
+| ---------------- | ----------------------------------------------------------------- | ---------- | ------------------------- |
+| fluentd          | 用于所有服务的日志收集                                            | 24224      | -                         |
+| mosdns           | 用于家庭网络的总 DNS 服务器                                       | 53         | -                         |
+| node_exporter    | 主机节点监控服务                                                  | 9100       | -                         |
+| cadvisor         | Docker 容器监控服务                                               | 8080       | -                         |
+| prometheus       | 监控服务                                                          | 9090       | prometheus.i.zhangzqs.cn  |
+| gitea            | Git 代码托管服务                                                  | 3001, 222  | gitea.i.zhangzqs.cn       |
+| grafana          | 可视化监控服务                                                    | 3000       | grafana.i.zhangzqs.cn     |
+| vaultwarden      | 密码管理服务                                                      | 8081       | vaultwarden.i.zhangzqs.cn |
+| portainer        | Docker 容器管理服务                                               | 9000, 9443 | portainer.i.zhangzqs.cn   |
+| nginx            | 反向代理，各个服务统一入口服务                                    | 80, 443    | -                         |
+| speedtest        | 测速服务                                                          | 8082       | speedtest.i.zhangzqs.cn   |
+| drawio           | 在线绘图服务                                                      | 8083       | drawio.i.zhangzqs.cn      |
+| samba            | 文件共享服务                                                      | 445        | -                         |
+| aria2            | 下载服务                                                          | 6800       | aria2.i.zhangzqs.cn       |
+| aria2_ng         | Aria2 Web UI 服务                                                 | 6801       | aria2-ng.i.zhangzqs.cn    |
+| acme_sh          | SSL 证书申请服务                                                  | -          | -                         |
+| immich           | 图片管理服务                                                      | 8084       | immich.i.zhangzqs.cn      |
+| plantuml         | UML 在线绘图服务                                                  | 8085       | plantuml.i.zhangzqs.cn    |
+| filebrowser      | 文件浏览服务                                                      | 8086       | filebrowser.i.zhangzqs.cn |
+| gitea            | Git 代码托管服务                                                  | 3001, 222  | gitea.i.zhangzqs.cn       |
+| kms              | KMS 服务                                                          | 8087, 8088 | kms.i.zhangzqs.cn         |
+| dify             | -                                                                 | 8090       | dify.i.zhangzqs.cn        |
+| tailscale        | 异地组网                                                          | -          | -                         |
+| process_exporter | 进程监控服务                                                      | 9256       | -                         |
+| my_exporter      | [我的一些监控指标收集器](https://github.com/zhangzqs/my-exporter) | 8092       | -                         |
+| dlna_render      | DLNA 远程播放服务                                                 | -          | -                         |
+| it_tools         | 站长工具                                                          | 8096       | it-tools.i.zhangzqs.cn    |
