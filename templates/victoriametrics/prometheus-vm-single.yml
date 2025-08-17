@@ -2,20 +2,9 @@
 global:
   # 抓取时间周期，默认为1分钟，这里设置为15s
   scrape_interval: 15s
-  # eval的时间周期，默认为1分钟，用于计算规则，触发告警等操作
-  evaluation_interval: 15s
-
-# 告警规则配置
-rule_files:
-  - "/rules/*.rules.yml"
 
 # 各个服务抓取配置
 scrape_configs:
-  - job_name: "prometheus"
-    static_configs:
-      - targets: # 自身指标
-          - "{{ prometheus_bind_host }}:{{ prometheus_bind_port }}"
-
   - job_name: "node_exporter"
     static_configs:
 {%- for host in groups['node_exporter'] %}
@@ -69,6 +58,3 @@ scrape_configs:
           home: "{{ home_name }}"
           host: "{{ host }}"
 {%- endfor %}
-
-remote_write:
-  - url: http://192.168.242.2:8428/api/v1/write

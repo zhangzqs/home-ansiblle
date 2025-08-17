@@ -1,0 +1,27 @@
+# 告警规则组
+groups:
+  - name: Alert
+    interval: 15s # 这个group内的表达式每隔多长时间执行一次
+    rules:
+      # 当某些节点的cpu占用超过80%时超过5分钟，产生告警
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m # 持续时间
+        labels: # 可以对告警消息打一些label，以便于alertmanager按需进行路由
+          severity: critical
+        annotations: # 告警消息
+          summary: "实例CPU占用过高" # 告警标题
+          description: |
+            {% raw %}
+            实例 {{ $labels.instance }} 的CPU占用超过 80% 已经持续了超过5分钟
+            {% endraw %}"
+
+      # 存在某个Exporter掉线了
+      - alert: ExporterDown
+        expr: up == 0 # 存在任意一个exporter掉线了
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "{% raw %}Prometheus存在一个 Exporter 掉线 {{ $labels.job }}{% endraw %}"
+          description: "{% raw %}Exporter {{ $labels.job }} 掉线超过5分钟{% endraw %}"

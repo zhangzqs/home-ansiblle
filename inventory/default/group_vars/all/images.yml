@@ -129,3 +129,9 @@ home_images:
   it_tools: # https://hub.docker.com/r/corentinth/it-tools/tags
     image: corentinth/it-tools:2024.10.22-7ca5933
     offline_file: it-tools_2024.10.22-7ca5933
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.123.0
+    offline_file: victoriametrics_v1.123.0
+  victoriametrics_vmagent:
+    image: victoriametrics/vmagent:v1.123.0
+    offline_file: victoriametrics_vmagent_v1.123.0

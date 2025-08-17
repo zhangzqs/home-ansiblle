@@ -19,6 +19,7 @@ services:
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
       - "--web.listen-address={{ prometheus_bind_host }}:{{ prometheus_bind_port }}"
+      - "--web.enable-admin-api"
 
 networks: {}
 

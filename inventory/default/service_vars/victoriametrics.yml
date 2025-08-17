@@ -1,0 +1,40 @@
+conf:
+  retention_time: 180d
+  custom_scrape_configs:
+    - job_name: "windows_exporter"
+      static_configs:
+        - targets:
+            - "192.168.242.4:9182"
+          labels:
+            home: "{{ home_name }}"
+            host: "my-jmk-k6"
+
+volumes:
+  vmdata:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/vmdata"
+      o: bind
+  vmagentdata:
+    driver: local
+    driver_opts:
+      type: none
+      device: "{{ home_volumes_dir }}/{{ service }}/vmagentdata"
+      o: bind
+
+precreate_dirs:
+  - path: "{{ home_volumes_dir }}/{{ service }}"
+    mode: 0755
+    owner: "{{ home_uid }}"
+    group: "{{ home_gid }}"
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/vmdata"
+    mode: 0755
+    owner: 65534
+    group: 65534
+
+  - path: "{{ home_volumes_dir }}/{{ service }}/vmagentdata"
+    mode: 0755
+    owner: 65534
+    group: 65534

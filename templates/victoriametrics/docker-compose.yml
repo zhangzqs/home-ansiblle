@@ -1,0 +1,43 @@
+name: "{{ home_name }}-victoriametrics"
+services:
+  vmagent:
+    container_name: "{{ home_name }}-vmagent"
+    image: "{{ home_images.victoriametrics_vmagent.image }}"
+    depends_on:
+      - victoriametrics
+    # ports:
+    #   - 8429:8429
+    volumes:
+      - vmagentdata:/vmagentdata
+      - ./prometheus-vm-single.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoriametrics:8428/api/v1/write"
+    restart: unless-stopped
+    
+  victoriametrics:
+    container_name: "{{ home_name }}-victoriametrics"
+    image: "{{ home_images.victoriametrics.image }}"
+    ports:
+      - "{{victoriametrics_bind_host}}:{{ victoriametrics_bind_port }}:8428"
+      # - 8089:8089
+      # - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - "vmdata:/storage"
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+      # - "--vmalert.proxyURL=http://vmalert:8880"
+    restart: unless-stopped
+    environment:
+      TZ: "{{ home_timezone }}"
+
+volumes:
+  vmagentdata: {{ service_vars.volumes.vmagentdata }}
+  vmdata: {{ service_vars.volumes.vmdata }}
