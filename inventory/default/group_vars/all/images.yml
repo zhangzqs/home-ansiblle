@@ -112,8 +112,8 @@ home_images:
     image: ncabatoff/process-exporter:v0.8.7
     offline_file: process-exporter_v0.8.7
   my_exporter: # https://github.com/zhangzqs/my-exporter/pkgs/container/my-exporter/
-    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/my-exporter:v0.0.16"
-    offline_file: my-exporter_v0.0.16
+    image: "{{ home_image_mirrors.ghcrio }}/zhangzqs/my-exporter:v0.0.17"
+    offline_file: my-exporter_v0.0.17
   rclone: # https://hub.docker.com/r/rclone/rclone/tags
     image: rclone/rclone:sha-4107246
     offline_file: rclone_sha-4107246

@@ -24,3 +24,10 @@ mirouter_config:
   password: "{{ home_secrets.my_exporter.mirouter.password }}"
   interval_seconds: 10
   device_name_alias_by_mac: {{ home_secrets.my_exporter.mirouter.device_name_alias_by_mac }}
+
+sslcert_config:
+  interval_seconds: 60 # 每分钟检查一次
+  domains:
+    - domain: "g.{{ home_base_domain }}"
+      port: 443
+      timeout: 10
