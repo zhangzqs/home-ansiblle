@@ -28,15 +28,36 @@ services:
     volumes:
       - "vmdata:/storage"
     command:
+      - "--retentionPeriod={{ service_vars.conf.retention_period }}"
       - "--storageDataPath=/storage"
       - "--graphiteListenAddr=:2003"
       - "--opentsdbListenAddr=:4242"
       - "--httpListenAddr=:8428"
       - "--influxListenAddr=:8089"
-      # - "--vmalert.proxyURL=http://vmalert:8880"
+      - "--vmalert.proxyURL=http://vmalert:8880"
     restart: unless-stopped
     environment:
       TZ: "{{ home_timezone }}"
+
+  # vmalert:
+  #   image: victoriametrics/vmalert:v1.124.0
+  #   depends_on:
+  #     - "victoriametrics"
+  #     # - "alertmanager"
+  #   # ports:
+  #   #   - 8880:8880
+  #   volumes:
+  #     - ./rules/alerts.yml:/etc/alerts/alerts.yml
+  #     # - ./rules/alerts-health.yml:/etc/alerts/alerts-health.yml
+  #     # - ./rules/alerts-vmagent.yml:/etc/alerts/alerts-vmagent.yml
+  #     # - ./rules/alerts-vmalert.yml:/etc/alerts/alerts-vmalert.yml
+  #   command:
+  #     - "--datasource.url=http://victoriametrics:8428/"
+  #     - "--remoteRead.url=http://victoriametrics:8428/"
+  #     - "--remoteWrite.url=http://vmagent:8429/"
+  #     # - "--notifier.url=http://alertmanager:9093/"
+  #     - "--rule=/etc/alerts/*.yml"
+  #   restart: always
 
 volumes:
   vmagentdata: {{ service_vars.volumes.vmagentdata }}

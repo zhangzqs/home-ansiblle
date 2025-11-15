@@ -58,3 +58,13 @@ scrape_configs:
           home: "{{ home_name }}"
           host: "{{ host }}"
 {%- endfor %}
+
+  - job_name: "tailscale"
+    static_configs:
+{%- for host in groups['tailscale'] %}
+      - targets:
+          - "{{ hostvars[host]['tailscale_bind_host'] }}:{{ hostvars[host]['tailscale_bind_port'] }}"
+        labels:
+          home: "{{ home_name }}"
+          host: "{{ host }}"
+{%- endfor %}

@@ -3,12 +3,16 @@ services:
   tailscale:
     image: "{{ home_images.tailscale.image }}"
     container_name: "{{ home_name }}-tailscale"
+    ports:
+      - "{{ tailscale_bind_host }}:9002:9002"
     environment:
       TZ: "{{ home_timezone }}"
       TS_AUTHKEY: "{{ home_secrets.tailscale.auth_key }}"
       TS_EXTRA_ARGS: {{ service_vars.conf.extra_args }}
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: false
+      TS_ENABLE_METRICS: true
+      TS_LOCAL_ADDR_PORT: 0.0.0.0:9002
     volumes:
       - tailscale_state:/var/lib/tailscale
     devices:
